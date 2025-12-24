@@ -549,6 +549,10 @@
         let bossBonusScore = 0;
         let bossRushWave = 0;
         let bossSpawnTimer = 0;
+        
+        // Hard Mode Blaster Variables
+        let blasterSpawnTimer = 0;
+        let nextBlasterInterval = 2000;
 
         let player;
         let enemies = [];
@@ -669,7 +673,6 @@
         }
 
         function renderShop() {
-            // ... (No change in logic, same function)
             shopGrid.innerHTML = '';
             let items, ownedList, equippedId;
 
@@ -781,7 +784,7 @@
             });
         }
 
-        // ... (Render functions omitted for brevity, same as previous)
+        // 共通形状描画ロジック
         function drawShape(ctx, type, x, y, r) {
             ctx.beginPath();
             if (type === 'square') { ctx.rect(x - r, y - r, r*2, r*2); } 
@@ -1120,81 +1123,59 @@
         // New Class: Blaster
         class Blaster {
             constructor() {
-                // Spawn randomly around the player
                 const angle = Math.random() * Math.PI * 2;
-                const dist = 250; 
+                const dist = 400 + Math.random() * 100;
+                
                 this.x = player.x + Math.cos(angle) * dist;
                 this.y = player.y + Math.sin(angle) * dist;
                 
-                // Clamp to screen bounds slightly so they aren't fully off-screen
                 this.x = Math.max(50, Math.min(canvas.width - 50, this.x));
                 this.y = Math.max(50, Math.min(canvas.height - 50, this.y));
 
-                this.targetX = player.x;
-                this.targetY = player.y;
-                this.angle = Math.atan2(this.targetY - this.y, this.targetX - this.x);
+                this.angle = Math.atan2(player.y - this.y, player.x - this.x);
                 
                 this.timer = 0;
-                this.phase = 0; // 0: Appear/Aim, 1: Fire, 2: Fade
+                this.phase = 0; 
                 this.scale = 0;
                 this.opacity = 0;
-                this.beamWidth = 0;
-                this.maxBeamWidth = 50;
+                this.beamWidth = 0; // Initialize to 0, will be set on phase 1
+                this.maxBeamWidth = 80;
             }
 
             update(dt, timeScale) {
                 this.timer += dt;
 
-                if (this.phase === 0) { // Appear & Aim
-                    if (this.scale < 1) this.scale += 0.05 * timeScale;
-                    if (this.opacity < 1) this.opacity += 0.05 * timeScale;
+                if (this.phase === 0) { // Warning
+                    if (this.scale < 1) this.scale += 0.1 * timeScale;
+                    if (this.opacity < 1) this.opacity += 0.1 * timeScale;
                     
-                    // Lock aim after 500ms
-                    if (this.timer < 500) {
-                        this.angle = Math.atan2(player.y - this.y, player.x - this.x);
-                    }
-
-                    if (this.timer > 1000) {
+                    if (this.timer > 1000) { 
                         this.phase = 1;
                         this.timer = 0;
-                        createExplosion(this.x, this.y, '#ffffff', 5); // Flash
-                        // Screen shake effect
-                        document.body.style.transform = `translate(${(Math.random()-0.5)*5}px, ${(Math.random()-0.5)*5}px)`;
-                        setTimeout(() => { document.body.style.transform = 'none'; }, 50);
+                        this.beamWidth = this.maxBeamWidth; // Correctly set beam width here
+                        createExplosion(this.x, this.y, '#ffffff', 5);
                     }
-                } else if (this.phase === 1) { // Fire
-                    this.beamWidth = this.maxBeamWidth; // Instant full width
-                    
-                    // Hit detection
-                    // Simple line collision
-                    // Define beam end point far away
+                } else if (this.phase === 1) { // FIRE
+                    // Collision
                     const beamLen = 2000;
                     const bx = this.x + Math.cos(this.angle) * beamLen;
                     const by = this.y + Math.sin(this.angle) * beamLen;
-                    
-                    // Distance from player center to line segment (this.x, this.y) -> (bx, by)
-                    // https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
-                    // Abs((x2-x1)(y1-y0) - (x1-x0)(y2-y1)) / Sqrt((x2-x1)^2 + (y2-y1)^2)
                     const num = Math.abs((bx - this.x) * (this.y - player.y) - (this.x - player.x) * (by - this.y));
                     const den = Math.hypot(bx - this.x, by - this.y);
                     const dist = num / den;
-
-                    // Check if player is "in front" of the blaster
-                    // Dot product
-                    const dot = (player.x - this.x) * (bx - this.x) + (player.y - this.y) * (by - this.y);
+                    const dot = (player.x - this.x) * Math.cos(this.angle) + (player.y - this.y) * Math.sin(this.angle);
                     
                     if (dist < (this.beamWidth / 2 + player.radius) && dot > 0) {
                         onPlayerHit();
                     }
 
-                    if (this.timer > 300) { // Fire duration
+                    if (this.timer > 400) { 
                         this.phase = 2;
                         this.timer = 0;
                     }
-                } else if (this.phase === 2) { // Fade
-                    this.beamWidth *= 0.8;
-                    this.opacity -= 0.05 * timeScale;
-                    this.scale -= 0.05 * timeScale;
+                } else if (this.phase === 2) { // Disappear
+                    this.scale -= 0.1 * timeScale;
+                    this.opacity -= 0.1 * timeScale;
                 }
             }
 
@@ -1203,52 +1184,56 @@
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.angle);
 
-                // Warning Line (Phase 0)
+                // Warning Line
                 if (this.phase === 0) {
-                    ctx.globalAlpha = 0.5;
+                    ctx.globalAlpha = 0.8;
                     ctx.beginPath();
                     ctx.moveTo(0, 0);
-                    ctx.lineTo(2000, 0); // Long line
+                    ctx.lineTo(2000, 0);
                     ctx.strokeStyle = '#ff0000';
                     ctx.lineWidth = 2;
-                    ctx.setLineDash([10, 10]);
+                    ctx.setLineDash([20, 15]);
                     ctx.stroke();
                     ctx.setLineDash([]);
                 }
 
-                // Beam (Phase 1 & 2)
-                if (this.phase > 0) {
-                    ctx.globalAlpha = Math.min(1, this.opacity + 0.5); // Beam stays bright
+                // BEAM
+                if (this.phase === 1) {
+                    ctx.globalAlpha = 1; 
+                    
+                    // Outer Glow
+                    ctx.shadowBlur = 30;
+                    ctx.shadowColor = '#00ffff';
                     ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, -this.beamWidth/2, 2000, this.beamWidth);
-                    ctx.fillStyle = '#00ffff'; // Outer glow color
-                    ctx.globalAlpha = 0.5;
-                    ctx.fillRect(0, -this.beamWidth/2 - 10, 2000, this.beamWidth + 20);
+                    ctx.fillRect(0, -this.beamWidth/2, 3000, this.beamWidth);
+                    
+                    // Inner Core
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, -this.beamWidth/2 * 0.6, 3000, this.beamWidth * 0.6);
                 }
 
-                // Draw Blaster Body
-                ctx.globalAlpha = this.opacity;
-                ctx.scale(this.scale, this.scale);
-                
-                // Shape: Gaster Blaster-ish (Skull/Cannon)
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                // Simple shape
-                ctx.moveTo(20, -20);
-                ctx.lineTo(40, -10);
-                ctx.lineTo(40, 10);
-                ctx.lineTo(20, 20);
-                ctx.lineTo(-20, 30); // Back curve
-                ctx.lineTo(-30, 0);
-                ctx.lineTo(-20, -30);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Eye/Mouth details
-                ctx.fillStyle = '#000';
-                ctx.beginPath(); ctx.arc(0, -10, 5, 0, Math.PI*2); ctx.fill(); // Eye
-                ctx.beginPath(); ctx.arc(0, 10, 5, 0, Math.PI*2); ctx.fill(); // Eye
-                
+                // Body
+                if (this.opacity > 0) {
+                    ctx.globalAlpha = Math.max(0, this.opacity);
+                    ctx.scale(this.scale, this.scale);
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.moveTo(25, -25);
+                    ctx.lineTo(50, -15);
+                    ctx.lineTo(50, 15);
+                    ctx.lineTo(25, 25);
+                    ctx.lineTo(-25, 35);
+                    ctx.lineTo(-35, 0);
+                    ctx.lineTo(-25, -35);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.fillStyle = '#000';
+                    ctx.beginPath(); ctx.arc(0, -12, 6, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(0, 12, 6, 0, Math.PI*2); ctx.fill();
+                }
                 ctx.restore();
             }
         }
@@ -1691,12 +1676,13 @@
                 }
             }
 
-            // Hard Mode Blaster Spawn Logic
+            // Hard Mode Blaster Spawn Logic (Timer Based)
             if (gameMode === 'hard' && score >= 65 && !isBossActive && !isGameClear) {
-                // Spawn chance increases with score
-                const spawnChance = 0.005 + (score - 60) * 0.0002;
-                if (Math.random() < spawnChance) {
+                blasterSpawnTimer += deltaTime;
+                if (blasterSpawnTimer > nextBlasterInterval) {
                     blasters.push(new Blaster());
+                    blasterSpawnTimer = 0;
+                    nextBlasterInterval = 1000 + Math.random() * 1000; // 1 to 2 seconds
                 }
             }
 
@@ -1779,7 +1765,7 @@
 
             // Update Blasters
             blasters.forEach((b, index) => {
-                b.update(timeScale);
+                b.update(deltaTime, timeScale); // deltaTime is now passed
                 b.draw();
                 if (b.phase === 2 && b.opacity <= 0) {
                     blasters.splice(index, 1);
