@@ -785,7 +785,7 @@
             });
         }
 
-        // ... (Render functions omitted for brevity, same as previous)
+        // 共通形状描画ロジック
         function drawShape(ctx, type, x, y, r) {
             ctx.beginPath();
             if (type === 'square') { ctx.rect(x - r, y - r, r*2, r*2); } 
@@ -1265,16 +1265,7 @@
             constructor(type) {
                 this.type = type;
                 this.radius = type === 2 ? 20 : 12;
-                
-                // Type 3 defaults
-                if (type === 3) {
-                    this.radius = 15;
-                    this.color = '#ffff00';
-                    this.attackTimer = 0;
-                } else {
-                    this.color = type === 1 ? '#ff00ff' : (type === 2 ? '#ff8800' : '#ff0055');
-                }
-
+                this.color = type === 1 ? '#ff00ff' : (type === 2 ? '#ff8800' : '#ff0055');
                 if (Math.random() < 0.5) {
                     this.x = Math.random() < 0.5 ? -30 : canvas.width + 30;
                     this.y = Math.random() * canvas.height;
@@ -1577,7 +1568,7 @@
 
             // Hard Mode Blaster Warning
             if (gameMode === 'hard' && score === 65) {
-                showMessage("WARNING! BLASTERS INCOMING", "warning");
+                showMessage("DANGER! BLASTERS INCOMING", "levelup");
             }
 
             if (score === 20 && difficultyLevel < 2) { difficultyLevel = 2; showMessage("SPEED UP!", "levelup"); }
