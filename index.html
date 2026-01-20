@@ -2,13 +2,11 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <!-- 画面サイズを固定し、拡大縮小を禁止して視野を安定させる -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Neon Survival - Glitch Color</title>
+    <title>Neon Survival - Gacha Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-        /* 画面全体を固定し、スクロールやバウンスを防ぐ */
         html, body {
             margin: 0;
             padding: 0;
@@ -46,113 +44,39 @@
             z-index: 10;
         }
 
-        /* 操作可能なUI要素 */
-        #start-screen, #game-over-screen, #shop-screen, #clear-screen {
-            pointer-events: auto;
-            background: rgba(0, 0, 0, 0.95);
-            padding: 40px;
-            border-radius: 10px;
-            border: 2px solid #00ffff;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
-            max-width: 800px;
-            width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            z-index: 30;
+        /* 共通ボタンスタイル */
+        button { 
+            background: rgba(0, 0, 0, 0.6); 
+            color: #00ffff; 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 20px; 
+            padding: 15px 20px; 
+            border: 2px solid #00ffff; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.1s; 
+            text-transform: uppercase; 
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); 
+            margin: 10px; 
+            pointer-events: auto; /* クリックを有効化 */
+            position: relative;
+            overflow: hidden;
+            z-index: 50; /* 重なり順を上げる */
         }
-
-        #shop-screen {
-            border-color: #ffff00;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.2);
-        }
-
-        #clear-screen {
-            border: 4px solid #ffd700;
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
-        }
-
-        /* HUD類 */
-        .hud {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-            pointer-events: none;
-        }
-
-        .hud-right {
-            left: auto;
-            right: 20px;
-            text-align: right;
-            pointer-events: none;
-        }
+        button:hover { background: #00ffff; color: #000; box-shadow: 0 0 30px rgba(0, 255, 255, 0.8); transform: scale(1.05); }
+        button:active { transform: scale(0.95); }
         
-        .hud-center {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            pointer-events: none;
-        }
-
-        #boss-hud {
-            position: absolute;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            max-width: 600px;
-            display: none;
-            pointer-events: none;
-        }
-        #boss-name { color: #ff0000; font-size: 18px; text-shadow: 0 0 10px #ff0000; margin-bottom: 5px; text-align: left; }
-        #boss-hp-bar-bg { width: 100%; height: 20px; background: rgba(50, 0, 0, 0.5); border: 2px solid #ff0000; border-radius: 4px; }
-        #boss-hp-bar-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0000, #ff8800); box-shadow: 0 0 15px #ff0000; transition: width 0.1s linear; }
-
-        #message-overlay {
-            position: absolute;
-            top: 30%;
-            width: 100%;
-            font-size: 80px;
+        /* タイトル画面のガチャボタン */
+        #gacha-menu-btn {
+            width: 300px !important;
+            padding: 20px !important;
+            font-size: 24px !important;
             font-weight: 900;
-            opacity: 0;
-            transition: opacity 0.5s;
-            text-shadow: 0 0 20px currentColor;
-            letter-spacing: 5px;
-            z-index: 20;
-            pointer-events: none;
+            letter-spacing: 2px;
+            background: rgba(20, 20, 0, 0.8);
+            z-index: 100; /* 最優先でクリック可能に */
         }
-        .msg-levelup { color: #00ff00; text-shadow: 0 0 30px #00ff00; }
-        .msg-warning { color: #ff0000; animation: blink 0.2s infinite alternate; }
-
-        @keyframes blink { from { text-shadow: 0 0 20px #ff0000; transform: scale(1); } to { text-shadow: 0 0 50px #ff0000; transform: scale(1.05); } }
-        @keyframes shine { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-
-        /* Typography & UI Elements */
-        h1 { font-size: 48px; margin: 0 0 20px 0; background: linear-gradient(45deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
-        #clear-screen h1 { background: linear-gradient(45deg, #ffd700, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 60px; animation: shine 2s infinite linear; }
-        h2 { font-size: 32px; color: #ffff00; text-shadow: 0 0 10px #ffff00; margin: 0 0 20px 0; }
-        p { font-size: 16px; color: #ccc; margin-bottom: 20px; line-height: 1.6; }
-
-        .life-heart { display: inline-block; width: 20px; height: 20px; background-color: #ff0055; margin: 0 5px; transform: rotate(45deg); box-shadow: 0 0 10px #ff0055; position: relative; }
-        .life-heart::before, .life-heart::after { content: ''; width: 20px; height: 20px; background-color: #ff0055; border-radius: 50%; position: absolute; }
-        .life-heart::before { top: -10px; left: 0; } .life-heart::after { top: 0; left: -10px; }
-        .life-heart.lost { background-color: #333; box-shadow: none; opacity: 0.5; }
-        .life-heart.lost::before, .life-heart.lost::after { background-color: #333; }
         
-        .hud-score { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; display: block; }
-        .hud-pts { font-size: 18px; color: #ffff00; text-shadow: 0 0 10px #ffff00; margin-top: 5px; display: block; }
-        
-        .rules { font-size: 14px; color: #aaa; text-align: left; margin: 0 auto 20px; width: fit-content; }
-        .rule-item { margin: 5px 0; }
-        .rule-score { color: #00ffff; font-weight: bold; width: 80px; display: inline-block; }
-
-        /* Buttons */
-        button { background: transparent; color: #00ffff; font-family: 'Orbitron', sans-serif; font-size: 20px; padding: 15px 20px; border: 2px solid #00ffff; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); margin: 10px; }
-        button:hover { background: #00ffff; color: #000; box-shadow: 0 0 30px rgba(0, 255, 255, 0.8); }
         .btn-green { color: #00ff00; border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
         .btn-green:hover { background: #00ff00; color: #000; box-shadow: 0 0 30px rgba(0, 255, 0, 0.8); }
         .btn-yellow { color: #ffff00; border-color: #ffff00; box-shadow: 0 0 15px rgba(255, 255, 0, 0.3); }
@@ -164,32 +88,249 @@
         .btn-black { color: #ffffff; border-color: #ffffff; background: #000000; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
         .btn-black:hover { background: #333333; box-shadow: 0 0 30px rgba(255, 255, 255, 0.8); }
 
+        /* Screen Containers */
+        #start-screen, #game-over-screen, #clear-screen {
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            max-width: 900px;
+            width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #gacha-screen {
+            pointer-events: auto;
+            background: linear-gradient(135deg, rgba(10, 0, 20, 0.98), rgba(0, 0, 0, 0.98));
+            padding: 20px;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 50px rgba(255, 0, 255, 0.3), inset 0 0 100px rgba(20, 0, 40, 0.5);
+            border-radius: 10px;
+            max-width: 1000px;
+            width: 95%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 30;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        #gacha-screen::-webkit-scrollbar { width: 8px; }
+        #gacha-screen::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 4px; }
+        #gacha-screen::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 4px; box-shadow: 0 0 10px #00ffff; }
+
+        #gacha-screen::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(circle, #222 1px, transparent 1px);
+            background-size: 20px 20px; opacity: 0.3; z-index: -1;
+            pointer-events: none;
+        }
+
+        #clear-screen { border: 4px solid #ffd700; box-shadow: 0 0 50px rgba(255, 215, 0, 0.5); }
+
+        .hud { position: absolute; top: 20px; left: 20px; font-size: 24px; color: #00ffff; text-shadow: 0 0 10px #00ffff; pointer-events: none; }
+        .hud-right { left: auto; right: 20px; text-align: right; pointer-events: none; }
+        .hud-center { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); text-align: center; pointer-events: none; }
+        .hud-score { color: #ff00ff; text-shadow: 0 0 10px #ff00ff; display: block; }
+        .hud-pts { font-size: 18px; color: #ffff00; text-shadow: 0 0 10px #ffff00; margin-top: 5px; display: block; }
+
+        #boss-hud { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); width: 60%; max-width: 600px; display: none; pointer-events: none; }
+        #boss-name { color: #ff0000; font-size: 18px; text-shadow: 0 0 10px #ff0000; margin-bottom: 5px; text-align: left; }
+        #boss-hp-bar-bg { width: 100%; height: 20px; background: rgba(50, 0, 0, 0.5); border: 2px solid #ff0000; border-radius: 4px; }
+        #boss-hp-bar-fill { width: 100%; height: 100%; background: linear-gradient(90deg, #ff0000, #ff8800); box-shadow: 0 0 15px #ff0000; transition: width 0.1s linear; }
+
+        #message-overlay {
+            position: absolute; top: 30%; width: 100%; font-size: 80px; font-weight: 900; opacity: 0; transition: opacity 0.5s;
+            text-shadow: 0 0 20px currentColor; letter-spacing: 5px; z-index: 20; pointer-events: none;
+        }
+        .msg-levelup { color: #00ff00; text-shadow: 0 0 30px #00ff00; }
+        .msg-warning { color: #ff0000; animation: blink 0.2s infinite alternate; }
+
+        @keyframes blink { from { text-shadow: 0 0 20px #ff0000; transform: scale(1); } to { text-shadow: 0 0 50px #ff0000; transform: scale(1.05); } }
+        @keyframes shine { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+        h1 { font-size: 48px; margin: 0 0 20px 0; background: linear-gradient(45deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; text-align: center; }
+        h2 { font-size: 32px; color: #ffff00; text-shadow: 0 0 10px #ffff00; margin: 0 0 20px 0; text-align: center; }
+        p { font-size: 16px; color: #ccc; margin-bottom: 20px; line-height: 1.6; text-align: center; }
+
+        .life-heart { display: inline-block; width: 20px; height: 20px; background-color: #ff0055; margin: 0 5px; transform: rotate(45deg); box-shadow: 0 0 10px #ff0055; position: relative; }
+        .life-heart::before, .life-heart::after { content: ''; width: 20px; height: 20px; background-color: #ff0055; border-radius: 50%; position: absolute; }
+        .life-heart::before { top: -10px; left: 0; } .life-heart::after { top: 0; left: -10px; }
+        
         .mode-select { display: flex; gap: 15px; justify-content: center; align-items: stretch; margin-bottom: 30px; flex-wrap: wrap; width: 100%; }
         .mode-select button { flex: 1; min-width: 140px; max-width: 220px; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 10px; line-height: 1.4; }
         .mode-desc { font-size: 11px; opacity: 0.8; font-weight: normal; margin-top: 5px; display: block; }
-        #shop-btn { width: 240px; max-width: 100%; margin: 0 auto; display: block; padding: 15px 40px; font-size: 24px; }
+        
         .hidden { display: none !important; }
-        .fs-note { font-size: 12px; color: #666; margin-top: 10px; }
-        .key-icon, .touch-icon { display: inline-block; border: 1px solid #00ffff; border-radius: 4px; padding: 2px 6px; font-size: 12px; margin: 0 2px; background: rgba(0, 255, 255, 0.1); }
-        .touch-icon { border-color: #ff00ff; background: rgba(255, 0, 255, 0.1); color: #ff00ff; }
+        .touch-icon { display: inline-block; border: 1px solid #ff00ff; border-radius: 4px; padding: 2px 6px; font-size: 12px; margin: 0 2px; background: rgba(255, 0, 255, 0.1); color: #ff00ff; }
 
-        /* Shop UI */
-        .shop-tabs { display: flex; justify-content: center; margin-bottom: 20px; border-bottom: 1px solid #444; flex-wrap: wrap; }
-        .shop-tab { background: transparent; color: #888; border: none; border-bottom: 3px solid transparent; padding: 10px 30px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 18px; border-radius: 0; box-shadow: none; margin: 0 5px; }
-        .shop-tab:hover { box-shadow: none; color: #fff; }
-        .shop-tab.active { color: #ffff00; border-bottom-color: #ffff00; }
-        #shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; width: 100%; margin-bottom: 30px; }
-        .skin-card { border: 1px solid #444; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.05); transition: transform 0.2s; }
-        .skin-card:hover { transform: translateY(-5px); border-color: #ffff00; }
-        .skin-card.owned { border-color: #00ff00; }
-        .skin-card.equipped { border-color: #00ffff; background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 15px rgba(0, 255, 255, 0.2); }
-        .skin-preview { width: 50px; height: 50px; margin-bottom: 10px; position: relative; }
-        .skin-name { font-size: 14px; margin-bottom: 5px; font-weight: bold; }
-        .skin-price { font-size: 12px; color: #ffff00; margin-bottom: 10px; }
-        .skin-btn { font-size: 12px; padding: 5px 15px; width: 100%; margin: 0; }
-        .skin-btn.equip { border-color: #00ff00; color: #00ff00; }
-        .skin-btn.equip:hover { background: #00ff00; color: #000; }
-        #current-pts-display { font-size: 24px; color: #ffff00; margin-bottom: 20px; padding-bottom: 10px; width: 100%; text-align: right; }
+        /* --- Gacha UI Styles --- */
+        .gacha-nav { display: flex; justify-content: center; width: 100%; border-bottom: 2px solid rgba(255,255,255,0.2); margin-bottom: 20px; flex-shrink: 0; }
+        .gacha-nav-btn { background: transparent; border: none; border-bottom: 4px solid transparent; color: #888; font-size: 24px; padding: 10px 40px; margin: 0; border-radius: 0; box-shadow: none; flex: 1; max-width: 300px; }
+        .gacha-nav-btn:hover { background: transparent; color: #fff; box-shadow: none; transform: none; }
+        .gacha-nav-btn.active { color: #ff00ff; border-bottom-color: #ff00ff; text-shadow: 0 0 15px #ff00ff; }
+        #nav-customize.active { color: #00ffff; border-bottom-color: #00ffff; text-shadow: 0 0 15px #00ffff; }
+
+        .gacha-sub-nav { display: flex; justify-content: center; gap: 10px; width: 100%; margin-bottom: 20px; }
+        .gacha-sub-btn { background: rgba(0,0,0,0.3); border: 1px solid #666; color: #888; padding: 8px 20px; font-size: 16px; border-radius: 20px; cursor: pointer; transition: all 0.2s; margin: 0; box-shadow: none; }
+        .gacha-sub-btn:hover { background: rgba(255,255,255,0.1); color: #fff; transform: translateY(-2px); }
+        .gacha-sub-btn.active { background: rgba(0, 255, 255, 0.2); border-color: #00ffff; color: #00ffff; box-shadow: 0 0 10px rgba(0,255,255,0.3); }
+        #btn-gacha-colors.active { background: rgba(255, 0, 85, 0.2); border-color: #ff0055; color: #ff0055; box-shadow: 0 0 10px rgba(255,0,85,0.3); }
+        #btn-gacha-trails.active { background: rgba(255, 255, 0, 0.2); border-color: #ffff00; color: #ffff00; box-shadow: 0 0 10px rgba(255,255,0,0.3); }
+
+        .gacha-container { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 30px; }
+        
+        .gacha-card { 
+            display: none; 
+            width: 320px; height: 500px;
+            border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; 
+            background: linear-gradient(180deg, rgba(30,30,40,0.8), rgba(10,10,20,0.9)); 
+            flex-direction: column; align-items: center; justify-content: space-between; 
+            padding: 30px; box-sizing: border-box; position: relative; overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        .gacha-card.active-card { display: flex; animation: fadeIn 0.3s ease-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .gacha-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%); background-size: 200% 200%; animation: shimmer 5s infinite; pointer-events: none; }
+        .gacha-card:hover { transform: translateY(-5px) scale(1.02); z-index: 5; }
+        
+        .gacha-card.shapes { border-color: #00ffff; box-shadow: 0 0 30px rgba(0,255,255,0.15); }
+        .gacha-card.shapes:hover { box-shadow: 0 0 50px rgba(0,255,255,0.5); }
+        .gacha-card.colors { border-color: #ff0055; box-shadow: 0 0 30px rgba(255,0,85,0.15); }
+        .gacha-card.colors:hover { box-shadow: 0 0 50px rgba(255,0,85,0.5); }
+        .gacha-card.trails { border-color: #ffff00; box-shadow: 0 0 30px rgba(255,255,0,0.15); }
+        .gacha-card.trails:hover { box-shadow: 0 0 50px rgba(255,255,0,0.5); }
+        
+        .gacha-title { font-size: 36px; font-weight: 900; margin-top: 10px; letter-spacing: 3px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        .gacha-icon { width: 150px; height: 150px; margin: 20px 0; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.3); border-radius: 50%; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+        
+        .gacha-desc { text-align: center; font-size: 12px; color: #ccc; margin-bottom: 20px; line-height: 1.4; height: 40px; }
+        
+        .gacha-btn-group { display: flex; gap: 15px; width: 100%; justify-content: space-between; }
+        
+        .btn-roll { 
+            flex: 1; font-size: 18px; font-weight: 900; margin: 0; letter-spacing: 1px; padding: 15px 5px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8), rgba(50,50,50,0.8)); border-width: 2px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .small-cost { font-size: 12px; font-weight: normal; margin-top: 5px; color: #fff; }
+        
+        .shapes .btn-roll { border-color: #00ffff; color: #00ffff; }
+        .shapes .btn-roll:hover { background: #00ffff; color: #000; box-shadow: 0 0 30px #00ffff; }
+        .shapes .small-cost { color: #ccffff; }
+        .shapes .btn-roll:hover .small-cost { color: #000; }
+        
+        .colors .btn-roll { border-color: #ff0055; color: #ff0055; }
+        .colors .btn-roll:hover { background: #ff0055; color: #fff; box-shadow: 0 0 30px #ff0055; }
+        
+        .trails .btn-roll { border-color: #ffff00; color: #ffff00; }
+        .trails .btn-roll:hover { background: #ffff00; color: #000; box-shadow: 0 0 30px #ffff00; }
+        .trails .btn-roll:hover .small-cost { color: #000; }
+
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Customize Panel */
+        .customize-tabs { display: flex; gap: 10px; margin-bottom: 15px; flex-shrink: 0; }
+        .cust-tab { padding: 5px 15px; font-size: 14px; border: 1px solid #444; color: #888; border-radius: 20px; margin: 0; box-shadow: none; }
+        .cust-tab.active { border-color: #00ffff; color: #00ffff; background: rgba(0,255,255,0.1); }
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; width: 100%; padding: 10px; }
+        .inv-item { border: 1px solid #444; border-radius: 8px; padding: 10px; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.05); cursor: pointer; position: relative; transition: all 0.2s; }
+        .inv-item.locked { opacity: 0.5; cursor: default; border-style: dashed; }
+        .inv-item.equipped { border-color: #00ffff; background: rgba(0, 255, 255, 0.15); box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); }
+        .inv-item:hover:not(.locked) { border-color: #fff; background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+        .inv-preview { width: 40px; height: 40px; margin-bottom: 5px; }
+        .inv-name { font-size: 10px; text-align: center; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
+        .inv-rarity { font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-top: 2px; }
+        
+        /* Rarity Colors */
+        .rarity-common { color: #ccc; border: 1px solid #555; }
+        .rarity-rare { color: #00ffff; border: 1px solid #00ffff; text-shadow: 0 0 5px #00ffff; }
+        .rarity-epic { color: #aa00ff; border: 1px solid #aa00ff; text-shadow: 0 0 5px #aa00ff; }
+        .rarity-legendary { color: #ffd700; border: 1px solid #ffd700; text-shadow: 0 0 5px #ffd700; animation: shine 1s infinite; }
+
+        /* --- Gacha Animation Overlay --- */
+        #gacha-result-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        #gacha-result-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        #gacha-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 101; pointer-events: none; }
+
+        /* Single Result Card */
+        .result-card { 
+            transform: scale(0); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            display: none;
+            flex-direction: column; align-items: center;
+            background: rgba(15, 15, 25, 0.95);
+            border: 2px solid #666; border-radius: 20px; padding: 40px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative; z-index: 102; min-width: 300px;
+        }
+        .result-card.show { transform: scale(1); }
+        .result-glow { width: 400px; height: 400px; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1; filter: blur(50px); opacity: 0.6; transition: background 0.3s; }
+        .result-preview { width: 140px; height: 140px; margin-bottom: 25px; z-index: 5; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+        
+        /* 10-Pull Result Grid */
+        .multi-result-container {
+            transform: scale(0); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            display: none; /* Grid when active */
+            grid-template-columns: repeat(5, 1fr); gap: 15px;
+            background: rgba(15, 15, 25, 0.95);
+            border: 2px solid #666; border-radius: 20px; padding: 30px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative; z-index: 102;
+            max-width: 90%; max-height: 90%;
+        }
+        .multi-result-container.show { transform: scale(1); }
+        .multi-result-header {
+            position: absolute; top: -50px; width: 100%; text-align: center;
+            font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #00ffff;
+        }
+        .multi-item-card {
+            display: flex; flex-direction: column; align-items: center;
+            background: rgba(0,0,0,0.5); border: 2px solid #444; border-radius: 10px;
+            padding: 10px; width: 100px;
+            animation: fadeInItem 0.5s forwards; opacity: 0;
+        }
+        @keyframes fadeInItem { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .multi-item-preview { width: 60px; height: 60px; margin-bottom: 5px; }
+        .multi-item-name { font-size: 10px; text-align: center; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; margin-bottom: 2px; }
+        .multi-item-status { font-size: 10px; font-weight: bold; }
+        .status-new { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+        .status-dup { color: #ff8800; }
+
+        .multi-result-footer {
+            grid-column: 1 / -1; display: flex; justify-content: center; margin-top: 20px;
+        }
+
+        .result-name { font-size: 40px; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; z-index: 5; color: #fff; text-shadow: 4px 4px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000; letter-spacing: 2px; }
+        .result-rarity { font-size: 24px; margin-bottom: 25px; letter-spacing: 8px; font-weight: bold; z-index: 5; text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; }
+        .result-msg { font-size: 18px; color: #ccc; margin-top: 15px; z-index: 5; text-shadow: 2px 2px 0 #000; font-weight: bold; }
+        
+        #gacha-flash { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 105; transition: opacity 0.1s; }
+        #summon-core { width: 0; height: 0; border-radius: 50%; background: #fff; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 102; box-shadow: 0 0 50px #fff; display: none; }
+
+        /* Responsive Grid for 10-pull */
+        @media (max-width: 600px) {
+            .multi-result-container { grid-template-columns: repeat(2, 1fr); max-height: 80vh; overflow-y: auto; }
+        }
     </style>
 </head>
 <body>
@@ -225,25 +366,129 @@
                 <button id="start-blasteronly-btn" class="btn-black">BLASTER ONLY<span class="mode-desc">ブラスターのみ / 特殊</span></button>
             </div>
             
-            <button id="shop-btn" class="btn-yellow">SHOP</button>
-            <div class="fs-note">Startを押すと全画面モードになります</div>
+            <button id="gacha-menu-btn" class="btn-yellow">GACHA / CUSTOMIZE</button>
+            <div class="fs-note" style="margin-top: 10px; font-size: 12px; color: #666;">Startを押すと全画面モードになります</div>
         </div>
 
-        <!-- Shop Screen -->
-        <div id="shop-screen" class="hidden">
-            <h2>SHOP</h2>
-            <div id="current-pts-display">PTS: 0</div>
+        <!-- Gacha & Customize Screen -->
+        <div id="gacha-screen" class="hidden">
+            <div id="current-pts-display" style="width: 100%; text-align: right; color: #ffff00; font-size: 24px; margin-bottom: 10px; font-weight: bold; text-shadow: 0 0 10px #ffff00; flex-shrink: 0;">PTS: 0</div>
             
-            <div class="shop-tabs">
-                <button class="shop-tab active" id="tab-shapes">SHAPES</button>
-                <button class="shop-tab" id="tab-colors">COLORS</button>
-                <button class="shop-tab" id="tab-trails">TRAILS</button>
+            <div class="gacha-nav">
+                <button id="nav-gacha" class="gacha-nav-btn active">GACHA</button>
+                <button id="nav-customize" class="gacha-nav-btn">CUSTOMIZE</button>
             </div>
 
-            <div id="shop-grid">
-                <!-- JSで生成 -->
+            <!-- GACHA PANEL -->
+            <div id="panel-gacha" class="gacha-container">
+                <div class="gacha-sub-nav">
+                    <button id="btn-gacha-skins" class="gacha-sub-btn active" onclick="switchGachaTab('shapes')">SKINS</button>
+                    <button id="btn-gacha-colors" class="gacha-sub-btn" onclick="switchGachaTab('colors')">COLORS</button>
+                    <button id="btn-gacha-trails" class="gacha-sub-btn" onclick="switchGachaTab('trails')">TRAILS</button>
+                </div>
+
+                <!-- Shape Gacha -->
+                <div id="card-shapes" class="gacha-card shapes active-card">
+                    <div class="gacha-title" style="color: #00ffff;">SKINS</div>
+                    <div class="gacha-icon">
+                         <div style="width: 80px; height: 80px; border: 4px solid #00ffff; border-radius: 50%; background: rgba(0,255,255,0.1); box-shadow: 0 0 20px rgba(0,255,255,0.2);"></div>
+                    </div>
+                    <div class="gacha-desc">
+                        プレイヤーの形状を変更<br>
+                        <span style="color:#ffd700; font-weight:bold;">LEGENDARY: HEART</span>
+                    </div>
+                    <div class="gacha-btn-group">
+                        <button class="btn-roll" onclick="rollGacha('shapes', 1)">
+                            1回<br><span class="small-cost">500 PTS</span>
+                        </button>
+                        <button class="btn-roll" onclick="rollGacha('shapes', 10)">
+                            10連<br><span class="small-cost">5000 PTS</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Color Gacha -->
+                <div id="card-colors" class="gacha-card colors">
+                    <div class="gacha-title" style="color: #ff0055;">COLORS</div>
+                    <div class="gacha-icon">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #ff0055, #ffff00); border-radius: 50%; box-shadow: 0 0 20px rgba(255,0,85,0.2);"></div>
+                    </div>
+                    <div class="gacha-desc">
+                        機体カラー・エフェクト<br>
+                        <span style="color:#ffd700; font-weight:bold;">LEGENDARY: PHANTOM</span>
+                    </div>
+                    <div class="gacha-btn-group">
+                        <button class="btn-roll" onclick="rollGacha('colors', 1)">
+                            1回<br><span class="small-cost">500 PTS</span>
+                        </button>
+                        <button class="btn-roll" onclick="rollGacha('colors', 10)">
+                            10連<br><span class="small-cost">5000 PTS</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Trail Gacha -->
+                <div id="card-trails" class="gacha-card trails">
+                    <div class="gacha-title" style="color: #ffff00;">TRAILS</div>
+                    <div class="gacha-icon">
+                        <div style="display: flex; gap: 5px;">
+                            <div style="width: 20px; height: 20px; background: #ffff00; border-radius: 50%; opacity: 0.3;"></div>
+                            <div style="width: 20px; height: 20px; background: #ffff00; border-radius: 50%; opacity: 0.6;"></div>
+                            <div style="width: 20px; height: 20px; background: #ffff00; border-radius: 50%; opacity: 1; box-shadow: 0 0 10px #ffff00;"></div>
+                        </div>
+                    </div>
+                    <div class="gacha-desc">
+                        移動の軌跡エフェクト<br>
+                        <span style="color:#ffd700; font-weight:bold;">LEGENDARY: FLAME</span>
+                    </div>
+                    <div class="gacha-btn-group">
+                        <button class="btn-roll" onclick="rollGacha('trails', 1)">
+                            1回<br><span class="small-cost">500 PTS</span>
+                        </button>
+                        <button class="btn-roll" onclick="rollGacha('trails', 10)">
+                            10連<br><span class="small-cost">5000 PTS</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <button id="shop-back-btn">BACK</button>
+
+            <!-- CUSTOMIZE PANEL -->
+            <div id="panel-customize" class="gacha-container hidden" style="flex-direction: column; align-items: center;">
+                <div class="customize-tabs">
+                    <button id="cust-tab-shapes" class="cust-tab active">SKINS</button>
+                    <button id="cust-tab-colors" class="cust-tab">COLORS</button>
+                    <button id="cust-tab-trails" class="cust-tab">TRAILS</button>
+                </div>
+                <div id="inventory-list" class="inventory-grid">
+                    <!-- JS Generated -->
+                </div>
+            </div>
+
+            <button id="gacha-back-btn" style="margin-top: 20px; flex-shrink: 0;">BACK</button>
+        </div>
+
+        <!-- Gacha Result Overlay -->
+        <div id="gacha-result-overlay">
+            <canvas id="gacha-canvas"></canvas>
+            <div id="gacha-flash"></div>
+            <div id="summon-core"></div>
+            
+            <!-- Single Result -->
+            <div id="gacha-result-card" class="result-card">
+                <div id="res-glow" class="result-glow"></div>
+                <canvas id="res-preview" class="result-preview" width="140" height="140"></canvas>
+                <div id="res-name" class="result-name">ITEM NAME</div>
+                <div id="res-rarity" class="result-rarity">COMMON</div>
+                <div id="res-msg" class="result-msg"></div>
+                <button onclick="closeGachaResult()" class="btn-yellow" style="margin-top: 30px; width: 200px; font-weight:bold; font-size:24px;">OK</button>
+            </div>
+
+            <!-- 10-Pull Result -->
+            <div id="gacha-multi-result" class="multi-result-container">
+                <div class="multi-result-header">10x SUMMON RESULTS</div>
+                <!-- JS will inject items here -->
+                <div class="multi-result-footer">
+                    <button onclick="closeGachaResult()" class="btn-yellow" style="width: 200px; font-weight:bold; font-size:24px;">OK</button>
+                </div>
+            </div>
         </div>
 
         <!-- Game Over Screen -->
@@ -254,7 +499,7 @@
             <div id="earned-pts">+0 PTS 獲得!</div>
             <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                 <button id="retry-btn">RETRY</button>
-                <button id="go-shop-btn" class="btn-yellow">SHOP</button>
+                <button id="go-gacha-btn" class="btn-yellow">GACHA</button>
                 <button id="title-btn">TITLE</button>
             </div>
         </div>
@@ -268,7 +513,7 @@
             <div id="clear-earned-pts" style="font-size: 24px; color: #ffff00; margin-bottom: 30px;">+0 PTS 獲得!</div>
             <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                 <button id="clear-retry-btn">TITLE</button>
-                <button id="clear-shop-btn" class="btn-yellow">SHOP</button>
+                <button id="clear-gacha-btn" class="btn-yellow">GACHA</button>
             </div>
         </div>
     </div>
@@ -290,21 +535,50 @@
         const bossHpBar = document.getElementById('boss-hp-bar-fill');
         
         const startScreen = document.getElementById('start-screen');
-        const shopScreen = document.getElementById('shop-screen');
+        const gachaScreen = document.getElementById('gacha-screen');
         const gameOverScreen = document.getElementById('game-over-screen');
         const clearScreen = document.getElementById('clear-screen');
         
         const finalScoreDisplay = document.getElementById('final-score');
         const earnedPtsDisplay = document.getElementById('earned-pts');
         const currentPtsDisplayShop = document.getElementById('current-pts-display');
-        const shopGrid = document.getElementById('shop-grid');
         
         const clearFinalScore = document.getElementById('clear-final-score');
         const clearEarnedPts = document.getElementById('clear-earned-pts');
 
-        const tabShapes = document.getElementById('tab-shapes');
-        const tabColors = document.getElementById('tab-colors');
-        const tabTrails = document.getElementById('tab-trails');
+        // Gacha & Customize UI
+        const navGacha = document.getElementById('nav-gacha');
+        const navCustomize = document.getElementById('nav-customize');
+        const panelGacha = document.getElementById('panel-gacha');
+        const panelCustomize = document.getElementById('panel-customize');
+        const custTabShapes = document.getElementById('cust-tab-shapes');
+        const custTabColors = document.getElementById('cust-tab-colors');
+        const custTabTrails = document.getElementById('cust-tab-trails');
+        const inventoryList = document.getElementById('inventory-list');
+        
+        // Gacha Sub-Tabs Buttons
+        const btnGachaSkins = document.getElementById('btn-gacha-skins');
+        const btnGachaColors = document.getElementById('btn-gacha-colors');
+        const btnGachaTrails = document.getElementById('btn-gacha-trails');
+        
+        // Gacha Cards
+        const cardShapes = document.getElementById('card-shapes');
+        const cardColors = document.getElementById('card-colors');
+        const cardTrails = document.getElementById('card-trails');
+        
+        // Gacha Animation Refs
+        const gachaOverlay = document.getElementById('gacha-result-overlay');
+        const gachaResultCard = document.getElementById('gacha-result-card');
+        const gachaMultiResult = document.getElementById('gacha-multi-result');
+        const resPreviewCanvas = document.getElementById('res-preview');
+        const resName = document.getElementById('res-name');
+        const resRarity = document.getElementById('res-rarity');
+        const resMsg = document.getElementById('res-msg');
+        const resGlow = document.getElementById('res-glow');
+        const gachaCanvas = document.getElementById('gacha-canvas');
+        const gachaCtx = gachaCanvas.getContext('2d');
+        const gachaFlash = document.getElementById('gacha-flash');
+        const summonCore = document.getElementById('summon-core');
 
         // Buttons
         const startEasyBtn = document.getElementById('start-easy-btn');
@@ -312,13 +586,15 @@
         const startHardBtn = document.getElementById('start-hard-btn');
         const startBossRushBtn = document.getElementById('start-bossrush-btn');
         const startBlasterOnlyBtn = document.getElementById('start-blasteronly-btn');
-        const shopBtn = document.getElementById('shop-btn');
-        const shopBackBtn = document.getElementById('shop-back-btn');
+        
+        const gachaMenuBtn = document.getElementById('gacha-menu-btn');
+        const gachaBackBtn = document.getElementById('gacha-back-btn');
+        
         const retryBtn = document.getElementById('retry-btn');
-        const goShopBtn = document.getElementById('go-shop-btn');
+        const goGachaBtn = document.getElementById('go-gacha-btn');
         const titleBtn = document.getElementById('title-btn');
         const clearRetryBtn = document.getElementById('clear-retry-btn');
-        const clearShopBtn = document.getElementById('clear-shop-btn');
+        const clearGachaBtn = document.getElementById('clear-gacha-btn');
 
         // Game State
         let isPlaying = false;
@@ -345,10 +621,16 @@
         let fireworks = [];
         let bullets = [];
         let enemyBullets = [];
-        let blasters = []; // Array for Gaster Blasters
+        let blasters = []; 
         let boss = null;
         let messageTimer = null;
-        let shopCategory = 'shapes'; // 'shapes', 'colors', 'trails'
+        let customizeCategory = 'shapes'; 
+        
+        // Gacha Animation State
+        let isGachaAnimating = false;
+        let gachaParticles = [];
+        let gachaPhase = 0; 
+        let gachaResults = []; // Store multiple results
         
         const keys = {
             ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false,
@@ -358,47 +640,170 @@
         const touchInput = { active: false, currX: 0, currY: 0 };
         const mouseInput = { active: false, currX: 0, currY: 0 };
 
-        // --- Save Data & Shop System ---
+        // --- Save Data & Gacha System ---
         
+        // Enhanced Shape List (Same as before)
         const SHAPES = [
-            { id: 'circle', name: 'CIRCLE', price: 0, type: 'circle' },
-            { id: 'square', name: 'SQUARE', price: 500, type: 'square' },
-            { id: 'triangle', name: 'TRIANGLE', price: 1000, type: 'triangle' },
-            { id: 'star', name: 'STAR', price: 1500, type: 'star' },
-            { id: 'hexagon', name: 'HEXAGON', price: 2000, type: 'hexagon' },
-            { id: 'diamond', name: 'DIAMOND', price: 2500, type: 'diamond' },
-            { id: 'cross', name: 'X-CROSS', price: 3000, type: 'cross' },
-            { id: 'shuriken', name: 'SHURIKEN', price: 3500, type: 'shuriken' },
-            { id: 'heart', name: 'HEART', price: 4000, type: 'heart' }
+            { id: 'circle', name: 'CIRCLE', type: 'circle', rarity: 'common' },
+            { id: 'square', name: 'SQUARE', type: 'square', rarity: 'common' },
+            { id: 'pentagon', name: 'PENTAGON', type: 'pentagon', rarity: 'common' },
+            { id: 'octagon', name: 'OCTAGON', type: 'octagon', rarity: 'common' },
+            { id: 'trapezoid', name: 'TRAPEZOID', type: 'trapezoid', rarity: 'common' },
+            { id: 'sector', name: 'SECTOR', type: 'sector', rarity: 'common' },
+            { id: 'arrow', name: 'ARROW', type: 'arrow', rarity: 'common' },
+            { id: 'drop', name: 'DROP', type: 'drop', rarity: 'common' },
+            
+            { id: 'triangle', name: 'TRIANGLE', type: 'triangle', rarity: 'rare' },
+            { id: 'star', name: 'STAR', type: 'star', rarity: 'rare' },
+            { id: 'ring_shape', name: 'RING', type: 'ring_shape', rarity: 'rare' },
+            { id: 'clover', name: 'CLOVER', type: 'clover', rarity: 'rare' },
+            { id: 'spade', name: 'SPADE', type: 'spade', rarity: 'rare' },
+            { id: 'moon', name: 'MOON', type: 'moon', rarity: 'rare' },
+            { id: 'cloud', name: 'CLOUD', type: 'cloud', rarity: 'rare' },
+            
+            { id: 'hexagon', name: 'HEXAGON', type: 'hexagon', rarity: 'epic' },
+            { id: 'diamond', name: 'DIAMOND', type: 'diamond', rarity: 'epic' },
+            { id: 'cross', name: 'X-CROSS', type: 'cross', rarity: 'epic' },
+            { id: 'gear', name: 'GEAR', type: 'gear', rarity: 'epic' },
+            { id: 'saw', name: 'SAWBLADE', type: 'saw', rarity: 'epic' },
+            { id: 'shield', name: 'SHIELD', type: 'shield', rarity: 'epic' },
+            { id: 'skull', name: 'SKULL', type: 'skull', rarity: 'epic' },
+            { id: 'ghost', name: 'GHOST', type: 'ghost', rarity: 'epic' },
+            { id: 'bat', name: 'BAT', type: 'bat', rarity: 'epic' },
+            { id: 'cat', name: 'CAT', type: 'cat', rarity: 'epic' },
+            { id: 'fish', name: 'FISH', type: 'fish', rarity: 'epic' },
+            { id: 'music', name: 'MUSIC', type: 'music', rarity: 'epic' },
+            
+            { id: 'shuriken', name: 'SHURIKEN', type: 'shuriken', rarity: 'legendary' },
+            { id: 'heart', name: 'HEART', type: 'heart', rarity: 'legendary' },
+            { id: 'crown', name: 'CROWN', type: 'crown', rarity: 'legendary' },
+            { id: 'sun', name: 'SUN', type: 'sun', rarity: 'legendary' },
+            { id: 'lightning_shape', name: 'LIGHTNING', type: 'lightning_shape', rarity: 'legendary' },
+            { id: 'infinity', name: 'INFINITY', type: 'infinity', rarity: 'legendary' },
+            { id: 'fighter', name: 'FIGHTER', type: 'fighter', rarity: 'legendary' }
         ];
 
         const COLORS = [
-            { id: 'cyan', name: 'CYAN', price: 0, color: '#00ffff' },
-            { id: 'lime', name: 'LIME', price: 500, color: '#00ff00' },
-            { id: 'crimson', name: 'CRIMSON', price: 500, color: '#ff0055' },
-            { id: 'gold', name: 'GOLD', price: 500, color: '#ffd700' },
-            { id: 'violet', name: 'VIOLET', price: 500, color: '#aa00ff' },
-            { id: 'orange', name: 'ORANGE', price: 500, color: '#ffaa00' },
-            { id: 'white', name: 'WHITE', price: 500, color: '#ffffff' },
-            { id: 'glitch', name: 'GLITCH', price: 2000, color: 'glitch' },
-            { id: 'fire', name: 'INFERNO', price: 2000, color: 'fire' },
-            { id: 'phantom', name: 'PHANTOM', price: 2500, color: 'phantom' }
+            // Common
+            { id: 'cyan', name: 'CYAN', color: '#00ffff', rarity: 'common' },
+            { id: 'lime', name: 'LIME', color: '#00ff00', rarity: 'common' },
+            { id: 'crimson', name: 'CRIMSON', color: '#ff0055', rarity: 'common' },
+            { id: 'orange', name: 'ORANGE', color: '#ffaa00', rarity: 'common' },
+            { id: 'azure', name: 'AZURE', color: '#007fff', rarity: 'common' },
+            { id: 'mint', name: 'MINT', color: '#98ff98', rarity: 'common' },
+            { id: 'coral', name: 'CORAL', color: '#ff7f50', rarity: 'common' },
+            { id: 'lavender', name: 'LAVENDER', color: '#e6e6fa', rarity: 'common' },
+            { id: 'steel', name: 'STEEL', color: '#4682b4', rarity: 'common' },
+            { id: 'bronze', name: 'BRONZE', color: '#cd7f32', rarity: 'common' },
+            { id: 'olive', name: 'OLIVE', color: '#808000', rarity: 'common' },
+            { id: 'maroon', name: 'MAROON', color: '#800000', rarity: 'common' },
+            { id: 'yellow', name: 'YELLOW', color: '#ffff00', rarity: 'common' },
+            { id: 'magenta', name: 'MAGENTA', color: '#ff00ff', rarity: 'common' },
+            { id: 'teal', name: 'TEAL', color: '#008080', rarity: 'common' },
+            { id: 'navy', name: 'NAVY', color: '#000080', rarity: 'common' },
+            { id: 'forest', name: 'FOREST', color: '#228b22', rarity: 'common' },
+            // Added Common
+            { id: 'indigo', name: 'INDIGO', color: '#4b0082', rarity: 'common' },
+            { id: 'chocolate', name: 'CHOCOLATE', color: '#d2691e', rarity: 'common' },
+            { id: 'peach', name: 'PEACH', color: '#ffdab9', rarity: 'common' },
+            { id: 'brown', name: 'BROWN', color: '#a52a2a', rarity: 'common' },
+
+            // Rare
+            { id: 'white', name: 'WHITE', color: '#ffffff', rarity: 'rare' },
+            { id: 'gold', name: 'GOLD', color: '#ffd700', rarity: 'rare' },
+            { id: 'violet', name: 'VIOLET', color: '#aa00ff', rarity: 'rare' },
+            { id: 'ruby', name: 'RUBY', color: '#e0115f', rarity: 'rare' },
+            { id: 'sapphire', name: 'SAPPHIRE', color: '#0f52ba', rarity: 'rare' },
+            { id: 'emerald', name: 'EMERALD', color: '#50c878', rarity: 'rare' },
+            { id: 'amethyst', name: 'AMETHYST', color: '#9966cc', rarity: 'rare' },
+            { id: 'obsidian', name: 'OBSIDIAN', color: '#303030', rarity: 'rare' },
+            { id: 'pearl', name: 'PEARL', color: '#eae0c8', rarity: 'rare' },
+            { id: 'neon_pink', name: 'NEON PINK', color: '#ff1493', rarity: 'rare' },
+            { id: 'turquoise', name: 'TURQUOISE', color: '#40e0d0', rarity: 'rare' },
+            { id: 'matrix', name: 'MATRIX', color: 'matrix', rarity: 'rare' },
+            { id: 'silver', name: 'SILVER', color: '#c0c0c0', rarity: 'rare' },
+            { id: 'sky_blue', name: 'SKY BLUE', color: '#87ceeb', rarity: 'rare' },
+            { id: 'hot_pink', name: 'HOT PINK', color: '#ff69b4', rarity: 'rare' },
+            { id: 'tan', name: 'TAN', color: '#d2b48c', rarity: 'rare' },
+            { id: 'slate', name: 'SLATE', color: '#708090', rarity: 'rare' },
+            // Added Rare
+            { id: 'spring', name: 'SPRING', color: '#00ff7f', rarity: 'rare' },
+            { id: 'royal', name: 'ROYAL', color: '#4169e1', rarity: 'rare' },
+            { id: 'orchid', name: 'ORCHID', color: '#da70d6', rarity: 'rare' },
+            { id: 'tomato', name: 'TOMATO', color: '#ff6347', rarity: 'rare' },
+
+            // Epic
+            { id: 'plasma', name: 'PLASMA', color: 'plasma', rarity: 'epic' },
+            { id: 'toxic', name: 'TOXIC', color: 'toxic', rarity: 'epic' },
+            { id: 'sunset', name: 'SUNSET', color: 'sunset', rarity: 'epic' },
+            { id: 'ocean', name: 'OCEAN', color: 'ocean', rarity: 'epic' },
+            { id: 'sakura', name: 'SAKURA', color: 'sakura', rarity: 'epic' },
+            { id: 'electric', name: 'ELECTRIC', color: 'electric', rarity: 'epic' },
+            { id: 'cyber', name: 'CYBER', color: 'cyber', rarity: 'epic' },
+            // Added Epic (Using hex for simplicity but high impact colors)
+            { id: 'midnight', name: 'MIDNIGHT', color: '#191970', rarity: 'epic' },
+            { id: 'blood', name: 'BLOOD', color: '#880000', rarity: 'epic' },
+
+            // Legendary
+            { id: 'glitch', name: 'GLITCH', color: 'glitch', rarity: 'legendary' },
+            { id: 'fire', name: 'INFERNO', color: 'fire', rarity: 'legendary' },
+            { id: 'phantom', name: 'PHANTOM', color: 'phantom', rarity: 'legendary' },
+            { id: 'rainbow', name: 'RAINBOW', color: 'rainbow', rarity: 'legendary' },
+            { id: 'starlight', name: 'STARLIGHT', color: 'starlight', rarity: 'legendary' },
+            { id: 'galaxy', name: 'GALAXY', color: 'galaxy', rarity: 'legendary' },
+            { id: 'magma', name: 'MAGMA', color: 'magma', rarity: 'legendary' },
+            { id: 'aurora', name: 'AURORA', color: 'aurora', rarity: 'legendary' },
+            { id: 'holo', name: 'HOLO', color: 'holo', rarity: 'legendary' },
+            { id: 'golden_age', name: 'GOLDEN AGE', color: 'golden_age', rarity: 'legendary' }
         ];
 
         const TRAILS = [
-            { id: 'none', name: 'NONE', price: 0, type: 'none' },
-            { id: 'circle', name: 'BASIC', price: 500, type: 'circle' },
-            { id: 'square', name: 'PIXEL', price: 1000, type: 'square' },
-            { id: 'star', name: 'SPARKLE', price: 1500, type: 'star' },
-            { id: 'ring', name: 'RIPPLE', price: 2000, type: 'ring' },
-            { id: 'glitch', name: 'GLITCH', price: 2500, type: 'glitch' },
-            { id: 'fire', name: 'FLAME', price: 2500, type: 'fire' },
-            { id: 'shard', name: 'SHARD', price: 3000, type: 'diamond' },
-            { id: 'target', name: 'TARGET', price: 3500, type: 'cross' },
-            { id: 'prism', name: 'PRISM', price: 4000, type: 'triangle' },
-            { id: 'hive', name: 'HIVE', price: 4500, type: 'hexagon' },
-            { id: 'bolt', name: 'THUNDER', price: 5000, type: 'bolt' }
+            { id: 'none', name: 'NONE', type: 'none', rarity: 'common' },
+            
+            { id: 'circle', name: 'BASIC', type: 'circle', rarity: 'common' },
+            { id: 'triangle_trail', name: 'TRIANGLE', type: 'triangle_trail', rarity: 'common' },
+            { id: 'cross_trail', name: 'CROSS', type: 'cross_trail', rarity: 'common' },
+            { id: 'pentagon_trail', name: 'PENTAGON', type: 'pentagon_trail', rarity: 'common' },
+            { id: 'line_trail', name: 'LINE', type: 'line_trail', rarity: 'common' },
+            
+            { id: 'square', name: 'PIXEL', type: 'square', rarity: 'rare' },
+            { id: 'star', name: 'SPARKLE', type: 'star', rarity: 'rare' },
+            { id: 'ring', name: 'RIPPLE', type: 'ring', rarity: 'rare' },
+            { id: 'heart_trail', name: 'HEART', type: 'heart_trail', rarity: 'rare' },
+            { id: 'moon_trail', name: 'MOON', type: 'moon_trail', rarity: 'rare' },
+            { id: 'cloud_trail', name: 'CLOUD', type: 'cloud_trail', rarity: 'rare' },
+            { id: 'bubble_trail', name: 'BUBBLE', type: 'bubble_trail', rarity: 'rare' },
+            { id: 'arrow_trail', name: 'ARROW', type: 'arrow_trail', rarity: 'rare' },
+            
+            { id: 'glitch', name: 'GLITCH', type: 'glitch', rarity: 'epic' },
+            { id: 'shard', name: 'SHARD', type: 'diamond', rarity: 'epic' },
+            { id: 'target', name: 'TARGET', type: 'cross', rarity: 'epic' },
+            { id: 'prism', name: 'PRISM', type: 'triangle', rarity: 'epic' },
+            { id: 'gear_trail', name: 'GEAR', type: 'gear_trail', rarity: 'epic' },
+            { id: 'note_trail', name: 'NOTE', type: 'note_trail', rarity: 'epic' },
+            { id: 'snow_trail', name: 'SNOW', type: 'snow_trail', rarity: 'epic' },
+            { id: 'petal_trail', name: 'PETAL', type: 'petal_trail', rarity: 'epic' },
+            { id: 'leaf_trail', name: 'LEAF', type: 'leaf_trail', rarity: 'epic' },
+            { id: 'sun_trail', name: 'SUN', type: 'sun_trail', rarity: 'epic' },
+            { id: 'lightning_trail', name: 'LIGHTNING', type: 'lightning_trail', rarity: 'epic' },
+            { id: 'smile', name: 'SMILE', type: 'smile', rarity: 'epic' },
+            
+            { id: 'fire', name: 'FLAME', type: 'fire', rarity: 'legendary' },
+            { id: 'hive', name: 'HIVE', type: 'hexagon', rarity: 'legendary' },
+            { id: 'bolt', name: 'THUNDER', type: 'bolt', rarity: 'legendary' },
+            { id: 'smoke_trail', name: 'SMOKE', type: 'smoke_trail', rarity: 'legendary' },
+            { id: 'spark_trail', name: 'SPARK', type: 'spark_trail', rarity: 'legendary' },
+            { id: 'skull_trail', name: 'SKULL', type: 'skull_trail', rarity: 'legendary' },
+            { id: 'ghost_trail', name: 'GHOST', type: 'ghost_trail', rarity: 'legendary' },
+            { id: 'bat_trail', name: 'BAT', type: 'bat_trail', rarity: 'legendary' },
+            { id: 'binary', name: 'BINARY', type: 'binary', rarity: 'legendary' },
+            { id: 'spiral', name: 'SPIRAL', type: 'spiral', rarity: 'legendary' },
+            { id: 'void_trail', name: 'VOID', type: 'void_trail', rarity: 'legendary' },
+            { id: 'dna', name: 'DNA', type: 'dna', rarity: 'legendary' }
         ];
+
+        const GACHA_COST = 500;
+        const DUPLICATE_REFUND = 200;
 
         let saveData = {
             highScoreEasy: 0,
@@ -406,7 +811,7 @@
             highScoreHard: 0,
             highScoreBossRush: 0,
             highScoreBlasterOnly: 0,
-            points: 0,
+            points: 50000, 
             
             ownedShapes: ['circle'],
             equippedShape: 'circle',
@@ -422,14 +827,13 @@
         function requestFullScreen() {
             const docElm = document.documentElement;
             if (docElm.requestFullscreen) docElm.requestFullscreen().catch(() => {});
-            else if (docElm.mozRequestFullScreen) docElm.mozRequestFullScreen();
-            else if (docElm.webkitRequestFullScreen) docElm.webkitRequestFullScreen();
-            else if (docElm.msRequestFullscreen) docElm.msRequestFullscreen();
         }
 
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            gachaCanvas.width = window.innerWidth;
+            gachaCanvas.height = window.innerHeight;
         }
         window.addEventListener('resize', resize);
         resize();
@@ -447,7 +851,7 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('neonSurvivalSaveDataV6');
+            const stored = localStorage.getItem('neonSurvivalGachaV5');
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
@@ -462,7 +866,7 @@
         }
 
         function saveDataToLocal() {
-            localStorage.setItem('neonSurvivalSaveDataV6', JSON.stringify(saveData));
+            localStorage.setItem('neonSurvivalGachaV5', JSON.stringify(saveData));
             updateUI();
         }
 
@@ -480,7 +884,6 @@
         function updateLivesUI() {
             livesDisplay.innerHTML = '';
             if (!player) return;
-            
             for (let i = 0; i < player.lives; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'life-heart';
@@ -488,116 +891,380 @@
             }
         }
 
-        // --- Shop & Render Functions ---
-        function renderShop() {
-            shopGrid.innerHTML = '';
-            let items, ownedList, equippedId;
+        // --- Gacha Tab Logic ---
+        function switchGachaTab(category) {
+            btnGachaSkins.classList.remove('active');
+            btnGachaColors.classList.remove('active');
+            btnGachaTrails.classList.remove('active');
+            cardShapes.classList.remove('active-card');
+            cardColors.classList.remove('active-card');
+            cardTrails.classList.remove('active-card');
+            
+            if (category === 'shapes') { btnGachaSkins.classList.add('active'); cardShapes.classList.add('active-card'); } 
+            else if (category === 'colors') { btnGachaColors.classList.add('active'); cardColors.classList.add('active-card'); } 
+            else if (category === 'trails') { btnGachaTrails.classList.add('active'); cardTrails.classList.add('active-card'); }
+        }
 
-            if (shopCategory === 'shapes') {
-                items = SHAPES;
-                ownedList = saveData.ownedShapes;
-                equippedId = saveData.equippedShape;
-            } else if (shopCategory === 'colors') {
-                items = COLORS;
-                ownedList = saveData.ownedColors;
-                equippedId = saveData.equippedColor;
-            } else {
-                items = TRAILS;
-                ownedList = saveData.ownedTrails;
-                equippedId = saveData.equippedTrail;
+        // --- Gacha Logic ---
+        function getWeightedItem(list) {
+            let weightedList = [];
+            list.forEach(item => {
+                let weight = 45; 
+                if (item.rarity === 'rare') weight = 30; 
+                if (item.rarity === 'epic') weight = 20; 
+                if (item.rarity === 'legendary') weight = 5; 
+                for(let i=0; i<weight; i++) weightedList.push(item);
+            });
+            return weightedList[Math.floor(Math.random() * weightedList.length)];
+        }
+
+        function rollGacha(category, count) {
+            const cost = count * GACHA_COST;
+            if (saveData.points < cost) {
+                alert("ポイントが足りません！");
+                return;
+            }
+
+            saveData.points -= cost;
+            
+            let list, ownedList;
+            if (category === 'shapes') { list = SHAPES; ownedList = saveData.ownedShapes; }
+            else if (category === 'colors') { list = COLORS; ownedList = saveData.ownedColors; }
+            else { 
+                list = TRAILS.filter(t => t.id !== 'none');
+                ownedList = saveData.ownedTrails; 
+            }
+
+            gachaResults = [];
+            let totalRefund = 0;
+
+            for(let i=0; i<count; i++) {
+                const item = getWeightedItem(list);
+                const isDuplicate = ownedList.includes(item.id);
+                
+                if (!isDuplicate) {
+                    if (category === 'shapes') saveData.ownedShapes.push(item.id);
+                    else if (category === 'colors') saveData.ownedColors.push(item.id);
+                    else saveData.ownedTrails.push(item.id);
+                } else {
+                    totalRefund += DUPLICATE_REFUND;
+                }
+                
+                gachaResults.push({ item: item, duplicate: isDuplicate });
             }
             
+            if (totalRefund > 0) saveData.points += totalRefund;
+            saveDataToLocal();
+
+            playGachaAnimation(category, count, totalRefund);
+        }
+
+        // --- Enhanced Gacha Animation ---
+        function playGachaAnimation(category, count, totalRefund) {
+            isGachaAnimating = true;
+            gachaParticles = [];
+            gachaPhase = 0;
+            gachaOverlay.classList.add('active');
+            gachaResultCard.style.display = 'none';
+            gachaResultCard.classList.remove('show');
+            gachaMultiResult.style.display = 'none';
+            gachaMultiResult.classList.remove('show');
+            gachaFlash.style.opacity = 0;
+            
+            summonCore.style.display = 'block';
+            summonCore.style.width = '10px';
+            summonCore.style.height = '10px';
+            summonCore.style.opacity = 1;
+            
+            let maxRarityVal = 0; 
+            gachaResults.forEach(r => {
+                let val = 0;
+                if(r.item.rarity==='rare') val=1;
+                if(r.item.rarity==='epic') val=2;
+                if(r.item.rarity==='legendary') val=3;
+                if(val > maxRarityVal) maxRarityVal = val;
+            });
+            
+            let glowColor = '#ccc';
+            if (maxRarityVal === 1) glowColor = '#00ffff';
+            else if (maxRarityVal === 2) glowColor = '#aa00ff';
+            else if (maxRarityVal === 3) glowColor = '#ffd700'; 
+            
+            summonCore.style.boxShadow = `0 0 20px ${glowColor}`;
+            summonCore.style.background = '#fff';
+
+            let frame = 0;
+            const cx = gachaCanvas.width / 2;
+            const cy = gachaCanvas.height / 2;
+
+            function animateGacha() {
+                if (!isGachaAnimating) return;
+                gachaCtx.clearRect(0, 0, gachaCanvas.width, gachaCanvas.height);
+                frame++;
+
+                if (gachaPhase === 0) { 
+                    const progress = Math.min(1, frame / 60);
+                    const size = 10 + progress * 80 + Math.sin(frame * 0.5) * 5;
+                    summonCore.style.width = `${size}px`;
+                    summonCore.style.height = `${size}px`;
+                    
+                    if (frame % 2 === 0) {
+                        const angle = Math.random() * Math.PI * 2;
+                        const dist = 300 + Math.random() * 200;
+                        gachaParticles.push({
+                            x: cx + Math.cos(angle) * dist, y: cy + Math.sin(angle) * dist,
+                            vx: -Math.cos(angle) * 15, vy: -Math.sin(angle) * 15,
+                            life: 40, size: Math.random() * 4 + 2, color: glowColor
+                        });
+                    }
+
+                    if (frame > 60) {
+                        gachaPhase = 1; frame = 0;
+                        gachaFlash.style.opacity = 1;
+                        summonCore.style.display = 'none';
+                        document.body.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px)`;
+                        setTimeout(() => document.body.style.transform = 'none', 100);
+                        
+                        for (let i=0; i<100; i++) {
+                            const angle = Math.random() * Math.PI * 2;
+                            const speed = Math.random() * 20 + 5;
+                            gachaParticles.push({
+                                x: cx, y: cy, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+                                life: 100, size: Math.random() * 6 + 2,
+                                color: maxRarityVal === 3 ? `hsl(${Math.random()*360}, 100%, 50%)` : glowColor, drag: 0.95
+                            });
+                        }
+                    }
+                } else if (gachaPhase === 1) { 
+                    gachaFlash.style.opacity = Math.max(0, 1 - frame / 20);
+                    if (frame > 20) {
+                        if (count === 1) {
+                            if (!gachaResultCard.classList.contains('show')) showSingleResult(gachaResults[0], category, glowColor);
+                        } else {
+                            if (!gachaMultiResult.classList.contains('show')) showMultiResult(category, totalRefund);
+                        }
+                    }
+                }
+
+                for (let i = gachaParticles.length - 1; i >= 0; i--) {
+                    const p = gachaParticles[i];
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.drag) { p.vx *= p.drag; p.vy *= p.drag; }
+                    p.life--;
+                    gachaCtx.globalAlpha = Math.min(1, p.life / 20);
+                    gachaCtx.fillStyle = p.color;
+                    gachaCtx.beginPath(); gachaCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2); gachaCtx.fill();
+                    if (p.life <= 0) gachaParticles.splice(i, 1);
+                }
+                gachaCtx.globalAlpha = 1;
+                requestAnimationFrame(animateGacha);
+            }
+            animateGacha();
+        }
+
+        function showSingleResult(result, category, glowColor) {
+            gachaResultCard.style.display = 'flex';
+            const item = result.item;
+            const pCtx = resPreviewCanvas.getContext('2d');
+            pCtx.clearRect(0,0,140,140);
+            
+            drawPreviewInContext(pCtx, category, item, 70, 70, 30);
+
+            resName.innerText = item.name;
+            resName.style.color = item.rarity === 'legendary' ? '#ffd700' : '#fff';
+            
+            resRarity.innerText = item.rarity.toUpperCase();
+            resRarity.className = `result-rarity rarity-${item.rarity}`;
+            
+            resGlow.style.backgroundColor = glowColor;
+            if(item.rarity === 'legendary') {
+                resGlow.style.background = 'conic-gradient(from 0deg, red, orange, yellow, green, blue, purple, red)';
+                resGlow.style.animation = 'spin 2s linear infinite';
+            } else {
+                resGlow.style.animation = 'none';
+            }
+
+            if (result.duplicate) {
+                resMsg.innerText = `既に所持しています。\n+${DUPLICATE_REFUND} PTS`;
+                resMsg.style.color = "#ff8800";
+            } else {
+                resMsg.innerText = "NEW ITEM GET!";
+                resMsg.style.color = "#00ff00";
+            }
+
+            setTimeout(() => { gachaResultCard.classList.add('show'); }, 50);
+        }
+
+        function showMultiResult(category, totalRefund) {
+            gachaMultiResult.style.display = 'grid';
+            const items = gachaMultiResult.querySelectorAll('.multi-item-card');
+            items.forEach(el => el.remove());
+            
+            const footer = gachaMultiResult.querySelector('.multi-result-footer');
+            
+            gachaResults.forEach((res, i) => {
+                const div = document.createElement('div');
+                div.className = `multi-item-card rarity-${res.item.rarity}`;
+                div.style.animationDelay = `${i * 0.1}s`; 
+                
+                const cvs = document.createElement('canvas');
+                cvs.width = 60; cvs.height = 60;
+                cvs.className = 'multi-item-preview';
+                const ctx = cvs.getContext('2d');
+                drawPreviewInContext(ctx, category, res.item, 30, 30, 15);
+                div.appendChild(cvs);
+                
+                const name = document.createElement('div');
+                name.className = 'multi-item-name';
+                name.innerText = res.item.name;
+                if(res.item.rarity === 'legendary') name.style.color = '#ffd700';
+                div.appendChild(name);
+                
+                const status = document.createElement('div');
+                status.className = 'multi-item-status';
+                if(res.duplicate) {
+                    status.innerText = "DUPLICATE";
+                    status.classList.add('status-dup');
+                } else {
+                    status.innerText = "NEW!";
+                    status.classList.add('status-new');
+                }
+                div.appendChild(status);
+                
+                gachaMultiResult.insertBefore(div, footer);
+            });
+            
+            setTimeout(() => { gachaMultiResult.classList.add('show'); }, 50);
+        }
+
+        function drawPreviewInContext(ctx, category, item, x, y, size) {
+            let drawColor = '#00ffff'; 
+            let drawShape = 'circle';
+            
+            if (category === 'shapes') {
+                drawShape = item.type;
+                const cObj = COLORS.find(c => c.id === saveData.equippedColor);
+                if(cObj) drawColor = cObj.color;
+            } else if (category === 'colors') {
+                drawColor = item.color;
+                const sObj = SHAPES.find(s => s.id === saveData.equippedShape);
+                if(sObj) drawShape = sObj.type;
+            } else {
+                const cObj = COLORS.find(c => c.id === saveData.equippedColor);
+                if(cObj) drawColor = cObj.color;
+            }
+
+            if (category === 'trails') {
+                renderTrailPreview(ctx, item.type, drawColor, x, y);
+            } else {
+                 if (['glitch', 'fire', 'phantom', 'rainbow', 'plasma', 'toxic', 'starlight', 'matrix', 'sunset', 'ocean', 'sakura', 'electric', 'cyber', 'galaxy', 'magma', 'aurora', 'holo', 'golden_age'].includes(item.id) || 
+                     ['glitch', 'fire', 'phantom', 'rainbow', 'plasma', 'toxic', 'starlight', 'matrix', 'sunset', 'ocean', 'sakura', 'electric', 'cyber', 'galaxy', 'magma', 'aurora', 'holo', 'golden_age'].includes(drawColor)) {
+                    
+                    const effId = category === 'colors' ? item.id : (category === 'shapes' ? (COLORS.find(c => c.id === saveData.equippedColor)?.id || 'cyan') : 'cyan');
+                    
+                    if (effId === 'glitch') renderGlitchShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'fire') renderFireShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'phantom') renderPhantomShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'rainbow') renderRainbowShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'plasma') renderPlasmaShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'toxic') renderToxicShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'starlight') renderStarlightShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'matrix') renderMatrixShapePreview(ctx, drawShape, x, y, size);
+                    
+                    // New effects
+                    else if (effId === 'sunset') renderSunsetShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'ocean') renderOceanShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'sakura') renderSakuraShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'electric') renderElectricShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'cyber') renderCyberShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'galaxy') renderGalaxyShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'magma') renderMagmaShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'aurora') renderAuroraShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'holo') renderHoloShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'golden_age') renderGoldenAgeShapePreview(ctx, drawShape, x, y, size);
+                    else renderShapePreview(ctx, drawShape, drawColor, x, y, size);
+                 }
+                 else renderShapePreview(ctx, drawShape, drawColor, x, y, size);
+            }
+        }
+
+        function closeGachaResult() {
+            gachaOverlay.classList.remove('active');
+            isGachaAnimating = false;
+            gachaParticles = [];
+            gachaCtx.clearRect(0, 0, gachaCanvas.width, gachaCanvas.height);
+            if (navCustomize.classList.contains('active')) {
+                renderCustomize();
+            }
+        }
+
+        // --- Render Functions (Customize) ---
+        function renderCustomize() {
+            inventoryList.innerHTML = '';
+            let items, ownedList, equippedId;
+
+            if (customizeCategory === 'shapes') {
+                items = SHAPES; ownedList = saveData.ownedShapes; equippedId = saveData.equippedShape;
+            } else if (customizeCategory === 'colors') {
+                items = COLORS; ownedList = saveData.ownedColors; equippedId = saveData.equippedColor;
+            } else {
+                items = TRAILS; ownedList = saveData.ownedTrails; equippedId = saveData.equippedTrail;
+            }
+
             items.forEach(item => {
                 const isOwned = ownedList.includes(item.id);
                 const isEquipped = equippedId === item.id;
-                const canAfford = saveData.points >= item.price;
 
-                const card = document.createElement('div');
-                card.className = `skin-card ${isOwned ? 'owned' : ''} ${isEquipped ? 'equipped' : ''}`;
+                const div = document.createElement('div');
+                div.className = `inv-item ${isOwned ? '' : 'locked'} ${isEquipped ? 'equipped' : ''}`;
                 
-                const previewCanvas = document.createElement('canvas');
-                previewCanvas.width = 50;
-                previewCanvas.height = 50;
-                previewCanvas.className = 'skin-preview';
-                const pCtx = previewCanvas.getContext('2d');
-                
-                let drawColor = '#00ffff'; 
-                let drawShape = 'circle';
+                const cvs = document.createElement('canvas');
+                cvs.width = 40; cvs.height = 40;
+                cvs.className = 'inv-preview';
+                const ctx = cvs.getContext('2d');
 
-                if (shopCategory === 'shapes') {
-                    drawShape = item.type;
-                    const cObj = COLORS.find(c => c.id === saveData.equippedColor);
-                    if(cObj) drawColor = cObj.color;
-                } else if (shopCategory === 'colors') {
-                    drawColor = item.color;
-                    const sObj = SHAPES.find(s => s.id === saveData.equippedShape);
-                    if(sObj) drawShape = sObj.type;
-                } else { 
-                    const cObj = COLORS.find(c => c.id === saveData.equippedColor);
-                    if(cObj) drawColor = cObj.color;
-                }
-
-                if (shopCategory === 'trails') {
-                    renderTrailPreview(pCtx, item.type, drawColor, 25, 25);
+                if (isOwned) {
+                    drawPreviewInContext(ctx, customizeCategory, item, 20, 20, 8);
                 } else {
-                    if (item.color === 'glitch' || drawColor === 'glitch') {
-                        renderGlitchShapePreview(pCtx, drawShape, 25, 25, 10);
-                    } else if (item.color === 'fire' || drawColor === 'fire') {
-                        renderFireShapePreview(pCtx, drawShape, 25, 25, 10);
-                    } else if (item.color === 'phantom' || drawColor === 'phantom') {
-                        renderPhantomShapePreview(pCtx, drawShape, 25, 25, 10);
+                    if (customizeCategory === 'colors') {
+                        ctx.fillStyle = '#666'; ctx.font = '24px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline='middle'; ctx.fillText('?', 20, 20);
+                        ctx.strokeStyle = '#444'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(20, 20, 15, 0, Math.PI*2); ctx.stroke();
                     } else {
-                        renderShapePreview(pCtx, drawShape, drawColor, 25, 25, 10);
+                        let silhouetteShape = 'circle';
+                        if (customizeCategory === 'shapes') silhouetteShape = item.type;
+                        
+                        if (customizeCategory === 'trails') {
+                             renderTrailPreview(ctx, item.type, '#444', 20, 20);
+                        } else {
+                             ctx.fillStyle = '#444'; ctx.strokeStyle = '#444'; ctx.lineWidth = 2;
+                             drawShape(ctx, silhouetteShape, 20, 20, 12); ctx.fill(); ctx.stroke();
+                        }
                     }
                 }
-                
-                card.appendChild(previewCanvas);
 
-                const name = document.createElement('div');
-                name.className = 'skin-name';
-                name.innerText = item.name;
-                card.appendChild(name);
+                div.appendChild(cvs);
 
-                const price = document.createElement('div');
-                price.className = 'skin-price';
-                price.innerText = isOwned ? 'OWNED' : `${item.price} PTS`;
-                card.appendChild(price);
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'inv-name';
+                nameDiv.innerText = item.name;
+                div.appendChild(nameDiv);
 
-                const btn = document.createElement('button');
-                btn.className = `skin-btn ${isEquipped ? '' : (isOwned ? 'equip' : '')}`;
-                
-                if (isEquipped) {
-                    btn.innerText = 'EQUIPPED';
-                    btn.disabled = true;
-                } else if (isOwned) {
-                    btn.innerText = 'EQUIP';
-                    btn.onclick = () => {
-                        if (shopCategory === 'shapes') saveData.equippedShape = item.id;
-                        else if (shopCategory === 'colors') saveData.equippedColor = item.id;
+                const rarityDiv = document.createElement('div');
+                rarityDiv.className = `inv-rarity rarity-${item.rarity}`;
+                rarityDiv.innerText = item.rarity.toUpperCase();
+                div.appendChild(rarityDiv);
+
+                if (isOwned) {
+                    div.onclick = () => {
+                        if (customizeCategory === 'shapes') saveData.equippedShape = item.id;
+                        else if (customizeCategory === 'colors') saveData.equippedColor = item.id;
                         else saveData.equippedTrail = item.id;
                         saveDataToLocal();
-                        renderShop();
+                        renderCustomize();
                     };
-                } else {
-                    btn.innerText = 'BUY';
-                    if (!canAfford) {
-                        btn.disabled = true;
-                        btn.style.opacity = 0.5;
-                    } else {
-                        btn.onclick = () => {
-                            if (saveData.points >= item.price) {
-                                saveData.points -= item.price;
-                                if (shopCategory === 'shapes') saveData.ownedShapes.push(item.id);
-                                else if (shopCategory === 'colors') saveData.ownedColors.push(item.id);
-                                else saveData.ownedTrails.push(item.id);
-                                saveDataToLocal();
-                                renderShop();
-                            }
-                        };
-                    }
                 }
-                card.appendChild(btn);
-                shopGrid.appendChild(card);
+
+                inventoryList.appendChild(div);
             });
         }
 
@@ -630,11 +1297,37 @@
                 } ctx.closePath();
             } else if (type === 'heart') {
                 ctx.moveTo(x, y + r * 0.8); ctx.bezierCurveTo(x + r, y, x + r, y - r, x, y - r * 0.5); ctx.bezierCurveTo(x - r, y - r, x - r, y, x, y + r * 0.8);
-            } else { ctx.arc(x, y, r, 0, Math.PI * 2); }
+            } 
+            else if (type === 'pentagon') { for(let i=0; i<5; i++) { ctx.lineTo(x + r * Math.cos((i * 72 - 18) * Math.PI / 180), y + r * Math.sin((i * 72 - 18) * Math.PI / 180)); } ctx.closePath(); }
+            else if (type === 'octagon') { for(let i=0; i<8; i++) { ctx.lineTo(x + r * Math.cos(i * Math.PI / 4), y + r * Math.sin(i * Math.PI / 4)); } ctx.closePath(); }
+            else if (type === 'trapezoid') { ctx.moveTo(x-r*0.6, y-r); ctx.lineTo(x+r*0.6, y-r); ctx.lineTo(x+r, y+r); ctx.lineTo(x-r, y+r); ctx.closePath(); }
+            else if (type === 'sector') { ctx.moveTo(x, y); ctx.arc(x, y, r, 0.2 * Math.PI, 1.8 * Math.PI); ctx.closePath(); }
+            else if (type === 'ring_shape') { ctx.arc(x, y, r, 0, Math.PI * 2); ctx.moveTo(x + r*0.6, y); ctx.arc(x, y, r*0.6, 0, Math.PI*2, true); }
+            else if (type === 'arrow') { ctx.moveTo(x-r, y+r); ctx.lineTo(x, y-r); ctx.lineTo(x+r, y+r); ctx.lineTo(x, y+r*0.5); ctx.closePath(); }
+            else if (type === 'drop') { ctx.arc(x, y+r*0.2, r*0.8, 0, Math.PI, false); ctx.lineTo(x, y-r); ctx.closePath(); }
+            else if (type === 'clover') { for(let i=0; i<4; i++) { const ang = i*Math.PI/2; const cx = x + Math.cos(ang)*r*0.5; const cy = y + Math.sin(ang)*r*0.5; ctx.moveTo(cx, cy); ctx.arc(cx, cy, r*0.5, 0, Math.PI*2); } }
+            else if (type === 'spade') { ctx.moveTo(x, y-r); ctx.bezierCurveTo(x+r, y-r, x+r, y+r*0.5, x, y+r*0.5); ctx.bezierCurveTo(x-r, y+r*0.5, x-r, y-r, x, y-r); ctx.moveTo(x, y+r*0.5); ctx.lineTo(x+r*0.2, y+r); ctx.lineTo(x-r*0.2, y+r); ctx.closePath(); }
+            else if (type === 'moon') { ctx.arc(x, y, r, 0, Math.PI*2); ctx.moveTo(x+r*0.5, y); ctx.arc(x+r*0.5, y, r*0.8, 0, Math.PI*2, true); }
+            else if (type === 'cloud') { ctx.moveTo(x-r, y); ctx.arc(x-r*0.5, y, r*0.5, Math.PI, 0); ctx.arc(x+r*0.5, y, r*0.6, Math.PI, 0); ctx.arc(x, y+r*0.5, r*0.5, 0, Math.PI); ctx.closePath(); }
+            else if (type === 'gear') { const teeth = 8; for(let i=0; i<teeth*2; i++) { const a = i * Math.PI / teeth; const len = i%2===0 ? r : r*0.7; ctx.lineTo(x+Math.cos(a)*len, y+Math.sin(a)*len); } ctx.closePath(); }
+            else if (type === 'saw') { const teeth = 12; for(let i=0; i<teeth; i++) { const a = i * Math.PI * 2 / teeth; ctx.lineTo(x+Math.cos(a)*r, y+Math.sin(a)*r); ctx.lineTo(x+Math.cos(a+0.3)*r*0.5, y+Math.sin(a+0.3)*r*0.5); } ctx.closePath(); }
+            else if (type === 'shield') { ctx.moveTo(x-r, y-r*0.8); ctx.lineTo(x+r, y-r*0.8); ctx.lineTo(x+r, y); ctx.quadraticCurveTo(x, y+r*1.5, x-r, y); ctx.closePath(); }
+            else if (type === 'crown') { ctx.moveTo(x-r, y+r*0.5); ctx.lineTo(x-r, y-r*0.5); ctx.lineTo(x-r*0.33, y); ctx.lineTo(x, y-r); ctx.lineTo(x+r*0.33, y); ctx.lineTo(x+r, y-r*0.5); ctx.lineTo(x+r, y+r*0.5); ctx.closePath(); }
+            else if (type === 'skull') { ctx.arc(x, y-r*0.2, r*0.8, 0, Math.PI*2); ctx.moveTo(x-r*0.4, y+r*0.5); ctx.rect(x-r*0.4, y+r*0.3, r*0.8, r*0.5); }
+            else if (type === 'ghost') { ctx.arc(x, y-r*0.2, r*0.8, Math.PI, 0); ctx.lineTo(x+r*0.8, y+r); ctx.lineTo(x, y+r*0.7); ctx.lineTo(x-r*0.8, y+r); ctx.closePath(); }
+            else if (type === 'bat') { ctx.moveTo(x, y+r*0.5); ctx.quadraticCurveTo(x+r, y-r, x+r*1.5, y-r*0.5); ctx.quadraticCurveTo(x+r*0.5, y, x, y-r*0.5); ctx.quadraticCurveTo(x-r*0.5, y, x-r*1.5, y-r*0.5); ctx.quadraticCurveTo(x-r, y-r, x, y+r*0.5); }
+            else if (type === 'cat') { ctx.arc(x, y, r*0.8, 0, Math.PI*2); ctx.moveTo(x-r*0.7, y-r*0.4); ctx.lineTo(x-r*0.9, y-r); ctx.lineTo(x-r*0.3, y-r*0.7); ctx.moveTo(x+r*0.7, y-r*0.4); ctx.lineTo(x+r*0.9, y-r); ctx.lineTo(x+r*0.3, y-r*0.7); }
+            else if (type === 'fish') { ctx.ellipse(x, y, r, r*0.6, 0, 0, Math.PI*2); ctx.moveTo(x+r, y); ctx.lineTo(x+r*1.5, y-r*0.5); ctx.lineTo(x+r*1.5, y+r*0.5); ctx.closePath(); }
+            else if (type === 'music') { ctx.ellipse(x-r*0.4, y+r*0.5, r*0.3, r*0.2, -0.2, 0, Math.PI*2); ctx.moveTo(x-r*0.2, y+r*0.5); ctx.lineTo(x-r*0.2, y-r*0.8); ctx.lineTo(x+r*0.5, y-r); ctx.lineTo(x+r*0.5, y+r*0.3); ctx.ellipse(x+r*0.3, y+r*0.3, r*0.3, r*0.2, -0.2, 0, Math.PI*2); }
+            else if (type === 'sun') { ctx.arc(x, y, r*0.6, 0, Math.PI*2); for(let i=0; i<8; i++) { const a = i*Math.PI/4; ctx.moveTo(x+Math.cos(a)*r*0.8, y+Math.sin(a)*r*0.8); ctx.lineTo(x+Math.cos(a)*r*1.4, y+Math.sin(a)*r*1.4); } }
+            else if (type === 'lightning_shape') { ctx.moveTo(x+r*0.2, y-r); ctx.lineTo(x-r*0.5, y+r*0.2); ctx.lineTo(x, y+r*0.2); ctx.lineTo(x-r*0.2, y+r); ctx.lineTo(x+r*0.5, y-r*0.2); ctx.lineTo(x, y-r*0.2); ctx.closePath(); }
+            else if (type === 'infinity') { ctx.arc(x-r*0.5, y, r*0.4, 0, Math.PI*2); ctx.arc(x+r*0.5, y, r*0.4, 0, Math.PI*2); }
+            else if (type === 'fighter') { ctx.moveTo(x, y-r); ctx.lineTo(x+r*0.5, y+r); ctx.lineTo(x, y+r*0.7); ctx.lineTo(x-r*0.5, y+r); ctx.closePath(); ctx.moveTo(x-r, y+r*0.5); ctx.lineTo(x+r, y+r*0.5); }
+            else { ctx.arc(x, y, r, 0, Math.PI * 2); }
         }
 
         function renderShapePreview(ctx, type, color, x, y, r) {
-            ctx.clearRect(0,0,50,50);
+            ctx.clearRect(0,0,x*2,y*2);
             ctx.fillStyle = color;
             ctx.strokeStyle = '#fff';
             ctx.lineWidth = 2;
@@ -645,54 +1338,169 @@
         }
 
         function renderGlitchShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,50,50);
+            ctx.clearRect(0,0,x*2,y*2);
             ctx.save(); ctx.translate(-2, 0); ctx.fillStyle = 'rgba(255, 0, 0, 0.7)'; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.restore();
             ctx.save(); ctx.translate(2, 0); ctx.fillStyle = 'rgba(0, 0, 255, 0.7)'; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.restore();
             ctx.fillStyle = '#fff'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.stroke();
         }
-
         function renderFireShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,50,50);
+            ctx.clearRect(0,0,x*2,y*2);
             ctx.shadowBlur = 15; ctx.shadowColor = '#ff0000'; ctx.fillStyle = 'rgba(255, 60, 0, 0.8)'; drawShape(ctx, type, x, y, r * 1.2); ctx.fill();
             ctx.shadowBlur = 5; ctx.shadowColor = '#ffaa00'; ctx.fillStyle = 'rgba(255, 160, 0, 0.9)'; drawShape(ctx, type, x, y, r * 1.0); ctx.fill();
             ctx.shadowBlur = 0; ctx.fillStyle = '#ffffaa'; drawShape(ctx, type, x, y, r * 0.6); ctx.fill();
         }
-
         function renderPhantomShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,50,50);
+            ctx.clearRect(0,0,x*2,y*2);
             ctx.shadowBlur = 15; ctx.shadowColor = '#4b0082'; ctx.fillStyle = 'rgba(75, 0, 130, 0.8)'; drawShape(ctx, type, x, y, r * 1.2); ctx.fill();
             ctx.shadowBlur = 5; ctx.shadowColor = '#ff00ff'; ctx.fillStyle = 'rgba(200, 0, 200, 0.9)'; drawShape(ctx, type, x, y, r * 1.0); ctx.fill();
             ctx.shadowBlur = 0; ctx.fillStyle = '#ffe0ff'; drawShape(ctx, type, x, y, r * 0.6); ctx.fill();
         }
+        function renderRainbowShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            const grad = ctx.createLinearGradient(x-r, y-r, x+r, y+r);
+            grad.addColorStop(0, 'red'); grad.addColorStop(0.2, 'orange'); grad.addColorStop(0.4, 'yellow'); grad.addColorStop(0.6, 'green'); grad.addColorStop(0.8, 'blue'); grad.addColorStop(1, 'violet');
+            ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.arc(x, y, r * 0.4, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+        }
+        function renderPlasmaShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.shadowBlur = 10; ctx.shadowColor = '#00ffff'; ctx.fillStyle = '#0000ff'; drawShape(ctx, type, x, y, r); ctx.fill();
+            ctx.shadowBlur = 5; ctx.shadowColor = '#ff00ff'; ctx.fillStyle = 'rgba(255, 0, 255, 0.5)'; drawShape(ctx, type, x, y, r*0.8); ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+        function renderToxicShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.fillStyle = '#4b0082'; drawShape(ctx, type, x, y, r); ctx.fill();
+            ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 3; ctx.stroke();
+            ctx.fillStyle = '#00ff00'; ctx.beginPath(); ctx.arc(x, y, r*0.3, 0, Math.PI*2); ctx.fill();
+        }
+        function renderStarlightShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.shadowBlur = 15; ctx.shadowColor = '#ffff00'; ctx.fillStyle = '#ffffff'; drawShape(ctx, type, x, y, r); ctx.fill();
+            ctx.fillStyle = 'rgba(255, 255, 0, 0.5)'; drawShape(ctx, type, x, y, r); ctx.fill();
+        }
+        function renderMatrixShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.fillStyle = '#003300'; drawShape(ctx, type, x, y, r); ctx.fill();
+            ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 2; ctx.stroke();
+            ctx.fillStyle = '#00ff00'; ctx.font = '10px monospace'; ctx.fillText('10', x-5, y);
+        }
+        function renderSunsetShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            const grad = ctx.createLinearGradient(x, y-r, x, y+r);
+            grad.addColorStop(0, '#ffcc33'); grad.addColorStop(0.5, '#ff6666'); grad.addColorStop(1, '#663399');
+            ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+        }
+        function renderOceanShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            const grad = ctx.createRadialGradient(x, y, r*0.2, x, y, r);
+            grad.addColorStop(0, '#00ffff'); grad.addColorStop(1, '#00008b');
+            ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+        }
+        function renderSakuraShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.fillStyle = '#ffb7c5'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x-5, y-5, 3, 0, Math.PI*2); ctx.fill();
+        }
+        function renderElectricShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.shadowBlur = 10; ctx.shadowColor = '#00ffff'; ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 3; drawShape(ctx, type, x, y, r); ctx.stroke();
+            ctx.fillStyle = '#e0ffff'; ctx.fill(); ctx.shadowBlur = 0;
+        }
+        function renderCyberShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.fillStyle = '#000'; ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x-r, y); ctx.lineTo(x+r, y); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, y-r); ctx.lineTo(x, y+r); ctx.stroke();
+        }
+        function renderGalaxyShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+            grad.addColorStop(0, '#ff00ff'); grad.addColorStop(0.5, '#4b0082'); grad.addColorStop(1, '#000000');
+            ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+3, y-3, 1, 0, Math.PI*2); ctx.fill();
+        }
+        function renderMagmaShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.shadowBlur = 15; ctx.shadowColor = '#ff4500'; ctx.fillStyle = '#8b0000'; drawShape(ctx, type, x, y, r); ctx.fill();
+            ctx.fillStyle = '#ff8c00'; ctx.beginPath(); ctx.arc(x, y, r*0.6, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
+        }
+        function renderAuroraShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            const grad = ctx.createLinearGradient(x-r, y, x+r, y);
+            grad.addColorStop(0, '#00ff00'); grad.addColorStop(0.5, '#00ffff'); grad.addColorStop(1, '#ff00ff');
+            ctx.fillStyle = grad; ctx.globalAlpha = 0.8; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.globalAlpha = 1;
+        }
+        function renderHoloShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.fillStyle = 'rgba(200, 240, 255, 0.6)'; ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+        }
+        function renderGoldenAgeShapePreview(ctx, type, x, y, r) {
+            ctx.clearRect(0,0,x*2,y*2);
+            ctx.shadowBlur = 20; ctx.shadowColor = '#ffd700';
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+            grad.addColorStop(0, '#fffacd'); grad.addColorStop(1, '#ffd700');
+            ctx.fillStyle = grad; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.shadowBlur = 0;
+        }
 
         function renderTrailPreview(ctx, type, color, x, y) {
-            ctx.clearRect(0,0,50,50);
+            ctx.clearRect(0,0,x*2,y*2);
             if (type === 'none') { ctx.fillStyle = '#555'; ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('NONE', x, y); return; }
             if (color === 'glitch') color = '#ffffff';
-            ctx.fillStyle = color; ctx.strokeStyle = color;
-
-            if (type === 'circle') {
-                ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.moveTo(x-15, y+5); ctx.quadraticCurveTo(x, y-10, x+15, y+5); ctx.stroke(); return;
-            }
-
+            
             for(let i=0; i<3; i++) {
                 const alpha = 1 - (i * 0.3);
-                const size = 6 - i;
-                const tx = x - i * 6;
-                const ty = y + i * 4;
+                const size = (6 - i) * (x/20); 
+                const tx = x - i * (x/3);
+                const ty = y + i * (y/5);
                 ctx.globalAlpha = alpha;
-                if (type === 'square' || type === 'glitch') { ctx.fillRect(tx-size, ty-size, size*2, size*2); } 
-                else if (type === 'star') { ctx.beginPath(); ctx.arc(tx, ty, size, 0, Math.PI*2); ctx.fill(); } 
-                else if (type === 'ring') { ctx.beginPath(); ctx.arc(tx, ty, size, 0, Math.PI*2); ctx.lineWidth = 1; ctx.stroke(); } 
-                else if (type === 'fire') { ctx.fillStyle = i === 0 ? '#ffff00' : (i === 1 ? '#ff8800' : '#ff0000'); ctx.beginPath(); ctx.arc(tx, ty - i*3, size+1, 0, Math.PI*2); ctx.fill(); } 
-                else if (type === 'phantom') { ctx.fillStyle = i === 0 ? '#ffccff' : (i === 1 ? '#aa00ff' : '#4b0082'); ctx.beginPath(); ctx.arc(tx, ty - i*3, size+1, 0, Math.PI*2); ctx.fill(); } 
-                else if (type === 'diamond') { ctx.beginPath(); ctx.moveTo(tx, ty - size); ctx.lineTo(tx + size, ty); ctx.lineTo(tx, ty + size); ctx.lineTo(tx - size, ty); ctx.fill(); } 
-                else if (type === 'cross') { ctx.fillRect(tx-size, ty-1, size*2, 2); ctx.fillRect(tx-1, ty-size, 2, size*2); } 
-                else if (type === 'triangle') { ctx.beginPath(); ctx.moveTo(tx, ty - size); ctx.lineTo(tx + size, ty + size); ctx.lineTo(tx - size, ty + size); ctx.fill(); } 
-                else if (type === 'hexagon') { ctx.beginPath(); for(let j=0; j<6; j++) { ctx.lineTo(tx + size * Math.cos(j * Math.PI / 3), ty + size * Math.sin(j * Math.PI / 3)); } ctx.fill(); } 
-                else if (type === 'bolt') { ctx.beginPath(); ctx.moveTo(tx, ty-size); ctx.lineTo(tx+2, ty); ctx.lineTo(tx-2, ty); ctx.lineTo(tx, ty+size); ctx.stroke(); }
+                drawTrailShape(ctx, type, tx, ty, size, color);
             }
             ctx.globalAlpha = 1;
+        }
+
+        function drawTrailShape(ctx, type, x, y, size, color) {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            
+            if (type === 'none') return;
+            
+            if (['circle','square','triangle_trail','cross_trail','pentagon_trail','heart_trail','moon_trail','cloud_trail','arrow_trail','gear_trail','skull_trail','ghost_trail','bat_trail','sun_trail','lightning_trail'].includes(type)) {
+                let shapeType = type.replace('_trail', '');
+                if(type === 'circle') shapeType = 'circle';
+                if(type === 'square') shapeType = 'square';
+                ctx.beginPath();
+                drawShape(ctx, shapeType, x, y, size);
+                ctx.fill();
+                return;
+            }
+
+            if (type === 'line_trail') { ctx.fillRect(x - size*2, y - size/2, size*4, size); }
+            else if (type === 'ring') { ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.stroke(); }
+            else if (type === 'bubble_trail') { ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.stroke(); ctx.beginPath(); ctx.arc(x+size*0.3, y-size*0.3, size*0.3, 0, Math.PI*2); ctx.fill(); }
+            else if (type === 'note_trail') { ctx.font = `${size*2}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('♪', x, y); }
+            else if (type === 'snow_trail') { ctx.font = `${size*2}px Arial`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('❄', x, y); }
+            else if (type === 'petal_trail') { ctx.beginPath(); ctx.ellipse(x, y, size, size*0.5, Math.random()*Math.PI, 0, Math.PI*2); ctx.fill(); }
+            else if (type === 'leaf_trail') { ctx.beginPath(); ctx.ellipse(x, y, size, size*0.4, 0.5, 0, Math.PI*2); ctx.moveTo(x-size, y); ctx.lineTo(x+size, y); ctx.stroke(); }
+            else if (type === 'smile') { ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.stroke(); ctx.beginPath(); ctx.arc(x, y, size*0.6, 0, Math.PI, false); ctx.stroke(); }
+            else if (type === 'star') { ctx.beginPath(); drawShape(ctx, 'star', x, y, size); ctx.fill(); }
+            else if (type === 'glitch') { ctx.fillRect(x-size+Math.random()*4, y-size, size*2, size*2); }
+            else if (type === 'fire') { ctx.fillStyle = `rgba(255, ${Math.random()*200}, 0, 1)`; ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.fill(); }
+            else if (type === 'smoke_trail') { ctx.fillStyle = `rgba(150, 150, 150, ${Math.random()})`; ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.fill(); }
+            else if (type === 'spark_trail') { ctx.fillRect(x, y, 2, 2); }
+            else if (type === 'binary') { ctx.font = `${size}px monospace`; ctx.fillText(Math.random()>0.5?'1':'0', x, y); }
+            else if (type === 'spiral') { ctx.beginPath(); for(let i=0; i<3; i++) { const a = i*2 + Date.now()/100; ctx.arc(x+Math.cos(a)*size, y+Math.sin(a)*size, 2, 0, Math.PI*2); } ctx.fill(); }
+            else if (type === 'void_trail') { ctx.fillStyle='#000'; ctx.strokeStyle=color; ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.fill(); ctx.stroke(); }
+            else if (type === 'dna') { ctx.fillRect(x-size, y, size*2, 2); ctx.beginPath(); ctx.arc(x-size, y, 2, 0, Math.PI*2); ctx.arc(x+size, y, 2, 0, Math.PI*2); ctx.fill(); }
+            else if (type === 'shard') { ctx.beginPath(); ctx.moveTo(x, y-size); ctx.lineTo(x+size/2, y); ctx.lineTo(x, y+size); ctx.lineTo(x-size/2, y); ctx.fill(); }
+            else if (type === 'target') { ctx.beginPath(); ctx.moveTo(x-size, y); ctx.lineTo(x+size, y); ctx.moveTo(x, y-size); ctx.lineTo(x, y+size); ctx.stroke(); ctx.beginPath(); ctx.arc(x, y, size/2, 0, Math.PI*2); ctx.stroke(); }
+            else if (type === 'prism') { ctx.beginPath(); ctx.moveTo(x, y-size); ctx.lineTo(x+size, y+size); ctx.lineTo(x-size, y+size); ctx.fill(); }
+            else if (type === 'hive') { for(let j=0; j<6; j++) { ctx.lineTo(x + size * Math.cos(j * Math.PI / 3), y + size * Math.sin(j * Math.PI / 3)); } ctx.fill(); } 
+            else if (type === 'bolt') { ctx.beginPath(); ctx.moveTo(x, y-size); ctx.lineTo(x+size/2, y); ctx.lineTo(x-size/2, y); ctx.lineTo(x, y+size); ctx.stroke(); }
+            else { ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI*2); ctx.fill(); }
         }
 
         // --- Game System ---
@@ -734,6 +1542,36 @@
                     currentColor = '#ff4400';
                 } else if (this.colorId === 'phantom') {
                     currentColor = '#4b0082';
+                } else if (this.colorId === 'rainbow') {
+                    currentColor = `hsl(${(Date.now()/5)%360}, 100%, 50%)`;
+                } else if (this.colorId === 'plasma') {
+                    currentColor = Math.random() > 0.5 ? '#0000ff' : '#ff00ff';
+                } else if (this.colorId === 'toxic') {
+                    currentColor = Math.random() > 0.5 ? '#00ff00' : '#800080';
+                } else if (this.colorId === 'starlight') {
+                    currentColor = Math.random() > 0.5 ? '#ffffff' : '#ffff00';
+                } else if (this.colorId === 'matrix') {
+                    currentColor = Math.random() > 0.2 ? '#00ff00' : '#003300';
+                } else if (this.colorId === 'sunset') {
+                    currentColor = '#ff4500';
+                } else if (this.colorId === 'ocean') {
+                    currentColor = '#0000cd';
+                } else if (this.colorId === 'sakura') {
+                    currentColor = '#ffb7c5';
+                } else if (this.colorId === 'electric') {
+                    currentColor = Math.random() > 0.5 ? '#00ffff' : '#e0ffff';
+                } else if (this.colorId === 'cyber') {
+                    currentColor = '#00ff00';
+                } else if (this.colorId === 'galaxy') {
+                    currentColor = Math.random() > 0.5 ? '#4b0082' : '#000000';
+                } else if (this.colorId === 'magma') {
+                    currentColor = Math.random() > 0.5 ? '#8b0000' : '#ff4500';
+                } else if (this.colorId === 'aurora') {
+                    currentColor = `hsl(${(Date.now()/20)%120 + 90}, 100%, 50%)`;
+                } else if (this.colorId === 'holo') {
+                    currentColor = `rgba(200, 240, 255, ${Math.random()})`;
+                } else if (this.colorId === 'golden_age') {
+                    currentColor = '#ffd700';
                 }
 
                 let ax = 0;
@@ -763,7 +1601,7 @@
 
                 if (touchInput.active) {
                     const targetX = touchInput.currX;
-                    const targetY = touchInput.currY - 50; // 指で隠れないように少し上に
+                    const targetY = touchInput.currY - 50; 
                     const t = 1 - Math.pow(0.80, timeScale);
                     this.x += (targetX - this.x) * t;
                     this.y += (targetY - this.y) * t;
@@ -814,7 +1652,6 @@
                 let offsetY = 0;
                 
                 if (this.trailType !== 'none') {
-                    // ... (Trail logic similar to previous but simplified for brevity)
                     const skipFrames = 3; 
                     for (let i = 0; i < this.trail.length - skipFrames; i++) {
                         const point = this.trail[i];
@@ -826,26 +1663,12 @@
                         const sizeRatio = i / this.trail.length;
                         const r = this.radius * sizeRatio;
 
-                        if (this.trailType === 'circle') { /* handled outside loop */ }
-                        else if (this.trailType === 'square') { ctx.fillRect(point.x - r, point.y - r, r*2, r*2); }
-                        // ... other trail types ... 
-                        else {
-                            // Default circle for others just in case or specific types
-                            ctx.beginPath(); ctx.arc(point.x, point.y, r, 0, Math.PI*2); ctx.fill();
-                        }
-                    }
-                    if (this.trailType === 'circle' && this.trail.length > 1) {
-                        ctx.beginPath();
-                        ctx.moveTo(this.trail[0].x, this.trail[0].y);
-                        for (let i = 1; i < this.trail.length - 2; i++) {
-                            const xc = (this.trail[i].x + this.trail[i + 1].x) / 2;
-                            const yc = (this.trail[i].y + this.trail[i + 1].y) / 2;
-                            ctx.quadraticCurveTo(this.trail[i].x, this.trail[i].y, xc, yc);
-                        }
-                        ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 3; ctx.strokeStyle = frameColor;
-                        ctx.shadowBlur = 10; ctx.shadowColor = frameColor; ctx.globalAlpha = 0.6; ctx.stroke(); ctx.shadowBlur = 0;
+                        ctx.globalAlpha = Math.max(0, point.alpha * 0.5);
+                        drawTrailShape(ctx, this.trailType, point.x, point.y, r, point.color || frameColor);
                     }
                 }
+                
+                ctx.globalAlpha = (this.invincibleTime > 0 && Math.floor(Date.now()/100)%2===0) ? 0.3 : 1.0;
                 
                 const r = 12;
                 ctx.save();
@@ -856,20 +1679,66 @@
                      frameColor = glitchColors[Math.floor(Math.random() * glitchColors.length)];
                      offsetX = (Math.random() - 0.5) * 4; offsetY = (Math.random() - 0.5) * 4; ctx.translate(offsetX, offsetY);
                 } else if (this.colorId === 'fire') {
-                    // ... Fire aura code
                     const t = Date.now() / 50;
                     ctx.save(); ctx.rotate(Math.sin(t*0.5)*0.2); ctx.fillStyle='rgba(255,0,0,0.6)'; ctx.shadowBlur=20; ctx.shadowColor='#ff0000'; drawShape(ctx, this.shapeType, 0, 0, r*1.3); ctx.fill(); ctx.restore();
                     ctx.save(); ctx.fillStyle='rgba(255,100,0,0.8)'; drawShape(ctx, this.shapeType, 0, 0, r*1.1); ctx.fill(); ctx.restore();
                     frameColor = '#ffff00'; ctx.shadowBlur = 10; ctx.shadowColor = '#ffaa00';
                 } else if (this.colorId === 'phantom') {
-                    // ... Phantom aura code
                     const t = Date.now() / 50;
                     ctx.save(); ctx.rotate(Math.sin(t*0.5)*0.2); ctx.fillStyle='rgba(75,0,130,0.6)'; ctx.shadowBlur=20; ctx.shadowColor='#4b0082'; drawShape(ctx, this.shapeType, 0, 0, r*1.3); ctx.fill(); ctx.restore();
                     ctx.save(); ctx.fillStyle='rgba(200,0,200,0.9)'; drawShape(ctx, this.shapeType, 0, 0, r*1.1); ctx.fill(); ctx.restore();
                     frameColor = '#ffe0ff'; ctx.shadowBlur = 10; ctx.shadowColor = '#ff00ff';
+                } else if (this.colorId === 'rainbow') {
+                    frameColor = `hsl(${(Date.now()/5)%360}, 100%, 50%)`;
+                } else if (this.colorId === 'plasma') {
+                    ctx.shadowBlur = 15; ctx.shadowColor = '#00ffff'; 
+                    frameColor = Math.sin(Date.now()/100) > 0 ? '#0000ff' : '#ff00ff';
+                } else if (this.colorId === 'toxic') {
+                    ctx.shadowBlur = 10; ctx.shadowColor = '#00ff00';
+                    frameColor = '#800080';
+                } else if (this.colorId === 'starlight') {
+                    ctx.shadowBlur = 20; ctx.shadowColor = '#ffff00';
+                    frameColor = Math.random() > 0.3 ? '#ffffff' : '#ffffaa';
+                } else if (this.colorId === 'matrix') {
+                    frameColor = '#00ff00';
+                    ctx.shadowBlur = 5; ctx.shadowColor = '#003300';
+                } else if (this.colorId === 'sunset') {
+                    const grad = ctx.createLinearGradient(-r, -r, r, r);
+                    grad.addColorStop(0, '#ffcc33'); grad.addColorStop(1, '#663399');
+                    ctx.fillStyle = grad;
+                } else if (this.colorId === 'ocean') {
+                    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+                    grad.addColorStop(0, '#00ffff'); grad.addColorStop(1, '#00008b');
+                    ctx.fillStyle = grad;
+                } else if (this.colorId === 'sakura') {
+                     ctx.shadowBlur = 5; ctx.shadowColor = '#ffb7c5'; frameColor = '#ffb7c5';
+                } else if (this.colorId === 'electric') {
+                     ctx.shadowBlur = 15; ctx.shadowColor = '#00ffff'; frameColor = '#e0ffff';
+                     if(Math.random() < 0.1) {
+                         ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); 
+                         ctx.moveTo((Math.random()-0.5)*r, (Math.random()-0.5)*r);
+                         ctx.lineTo((Math.random()-0.5)*r*2, (Math.random()-0.5)*r*2);
+                         ctx.stroke();
+                     }
+                } else if (this.colorId === 'cyber') {
+                    ctx.fillStyle = '#000'; ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 1;
+                } else if (this.colorId === 'galaxy') {
+                    const grad = ctx.createRadialGradient(0,0,0, 0,0,r);
+                    grad.addColorStop(0, '#ff00ff'); grad.addColorStop(1, '#000');
+                    ctx.fillStyle = grad;
+                } else if (this.colorId === 'magma') {
+                    ctx.shadowBlur = 10; ctx.shadowColor = '#ff4500'; frameColor = '#8b0000';
+                } else if (this.colorId === 'aurora') {
+                    frameColor = `hsl(${(Date.now()/20)%120 + 90}, 100%, 50%)`;
+                } else if (this.colorId === 'holo') {
+                    frameColor = `rgba(200, 240, 255, 0.6)`;
+                } else if (this.colorId === 'golden_age') {
+                    ctx.shadowBlur = 15; ctx.shadowColor = '#ffd700'; frameColor = '#ffd700';
                 }
 
-                ctx.fillStyle = frameColor;
+                // Apply fill if not set by gradient above
+                if (!['sunset','ocean','galaxy'].includes(this.colorId)) ctx.fillStyle = frameColor;
+                
                 ctx.strokeStyle = frameColor;
                 ctx.lineWidth = 2;
                 drawShape(ctx, this.shapeType, 0, 0, r); 
@@ -877,163 +1746,6 @@
                 ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
                 ctx.restore();
                 ctx.globalAlpha = 1; 
-            }
-        }
-
-        // Modified Class: Blaster
-        class Blaster {
-            constructor(x, y, angle, width, options = {}) {
-                // Initialize position and angle
-                if (x !== undefined && y !== undefined) {
-                    this.x = x;
-                    this.y = y;
-                    this.angle = angle;
-                } else {
-                    const spawnAngle = Math.random() * Math.PI * 2;
-                    const dist = 400 + Math.random() * 100;
-                    this.x = player.x + Math.cos(spawnAngle) * dist;
-                    this.y = player.y + Math.sin(spawnAngle) * dist;
-                    this.x = Math.max(50, Math.min(canvas.width - 50, this.x));
-                    this.y = Math.max(50, Math.min(canvas.height - 50, this.y));
-                    this.angle = Math.atan2(player.y - this.y, player.x - this.x);
-                }
-
-                this.timer = 0;
-                this.phase = 0; // 0: Warning, 1: Fire, 2: Fade
-                this.scale = 0;
-                this.opacity = 0;
-                this.beamWidth = 0;
-                this.maxBeamWidth = width || 80;
-                
-                // New options
-                this.tracking = options.tracking || false;
-                this.sweepSpeed = options.sweepSpeed || 0;
-                this.quick = options.quick || false;
-
-                // Color based on type
-                this.color = '#ffffff'; // Default
-                this.warningColor = '#ff0000'; // Default warning
-                if (this.tracking) {
-                    this.warningColor = '#aa00ff'; // Purple for tracking
-                    this.color = '#aa00ff';
-                } else if (this.sweepSpeed !== 0) {
-                    this.warningColor = '#ff8800'; // Orange for sweep
-                    this.color = '#ff8800';
-                } else if (this.quick) {
-                    this.warningColor = '#00ffff'; // Cyan for quick
-                    this.color = '#00ffff';
-                }
-            }
-
-            update(dt, timeScale) {
-                this.timer += dt;
-                
-                const warningTime = this.quick ? 600 : 1000;
-
-                if (this.phase === 0) { // Warning phase
-                    if (this.scale < 1) this.scale += 0.1 * timeScale;
-                    if (this.opacity < 1) this.opacity += 0.1 * timeScale;
-                    
-                    // Tracking behavior: lock aim until shortly before firing
-                    if (this.tracking && this.timer < warningTime - 200) {
-                        this.angle = Math.atan2(player.y - this.y, player.x - this.x);
-                    }
-                    
-                    // Pre-sweep rotation for visual indication
-                    if (this.sweepSpeed !== 0) {
-                         this.angle += this.sweepSpeed * timeScale;
-                    }
-
-                    if (this.timer > warningTime) { 
-                        this.phase = 1;
-                        this.timer = 0;
-                        this.beamWidth = this.maxBeamWidth;
-                        createExplosion(this.x, this.y, '#ffffff', 5);
-                    }
-                } else if (this.phase === 1) { // Firing phase
-                    // Sweeping behavior
-                    if (this.sweepSpeed !== 0) {
-                        this.angle += this.sweepSpeed * timeScale;
-                    }
-
-                    // Collision detection
-                    const beamLen = 2000;
-                    const bx = this.x + Math.cos(this.angle) * beamLen;
-                    const by = this.y + Math.sin(this.angle) * beamLen;
-                    const num = Math.abs((bx - this.x) * (this.y - player.y) - (this.x - player.x) * (by - this.y));
-                    const den = Math.hypot(bx - this.x, by - this.y);
-                    const dist = num / den;
-                    const dot = (player.x - this.x) * Math.cos(this.angle) + (player.y - this.y) * Math.sin(this.angle);
-                    
-                    if (dist < (this.beamWidth / 2 + player.radius) && dot > 0) {
-                        onPlayerHit();
-                    }
-
-                    if (this.timer > 400) { 
-                        this.phase = 2;
-                        this.timer = 0;
-                    }
-                } else if (this.phase === 2) { // Fade out
-                    this.scale -= 0.1 * timeScale;
-                    this.opacity -= 0.1 * timeScale;
-                }
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-
-                // Warning Line
-                if (this.phase === 0) {
-                    ctx.globalAlpha = 0.8;
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0);
-                    ctx.lineTo(2000, 0);
-                    ctx.strokeStyle = this.warningColor; 
-                    ctx.lineWidth = 2;
-                    ctx.setLineDash([20, 15]);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                }
-
-                // BEAM
-                if (this.phase === 1) {
-                    ctx.globalAlpha = 1; 
-                    // Outer Glow
-                    ctx.shadowBlur = 30;
-                    ctx.shadowColor = this.color;
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, -this.beamWidth/2, 3000, this.beamWidth);
-                    // Inner Core
-                    ctx.shadowBlur = 0;
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, -this.beamWidth/2 * 0.6, 3000, this.beamWidth * 0.6);
-                }
-
-                // Body
-                if (this.opacity > 0) {
-                    ctx.globalAlpha = Math.max(0, this.opacity);
-                    ctx.scale(this.scale, this.scale);
-                    
-                    ctx.fillStyle = '#ffffff';
-                    ctx.beginPath();
-                    ctx.moveTo(25, -25);
-                    ctx.lineTo(50, -15);
-                    ctx.lineTo(50, 15);
-                    ctx.lineTo(25, 25);
-                    ctx.lineTo(-25, 35);
-                    ctx.lineTo(-35, 0);
-                    ctx.lineTo(-25, -35);
-                    ctx.closePath();
-                    ctx.fill();
-                    
-                    // Eyes color change
-                    ctx.fillStyle = this.color === '#ffffff' ? '#000' : this.color;
-                    ctx.beginPath(); ctx.arc(0, -12, 6, 0, Math.PI*2); ctx.fill();
-                    ctx.beginPath(); ctx.arc(0, 12, 6, 0, Math.PI*2); ctx.fill();
-                }
-                ctx.restore();
             }
         }
         
@@ -1141,16 +1853,25 @@
         startBossRushBtn.addEventListener('click', () => { requestFullScreen(); startScreen.classList.add('hidden'); document.body.style.cursor = 'none'; isPlaying = true; init('boss_rush'); requestAnimationFrame(animate); });
         startBlasterOnlyBtn.addEventListener('click', () => { requestFullScreen(); startScreen.classList.add('hidden'); document.body.style.cursor = 'none'; isPlaying = true; init('blaster_only'); requestAnimationFrame(animate); });
         
-        shopBtn.addEventListener('click', () => { startScreen.classList.add('hidden'); shopScreen.classList.remove('hidden'); renderShop(); });
-        shopBackBtn.addEventListener('click', () => { shopScreen.classList.add('hidden'); startScreen.classList.remove('hidden'); });
-        tabShapes.addEventListener('click', () => { shopCategory = 'shapes'; tabShapes.classList.add('active'); tabColors.classList.remove('active'); tabTrails.classList.remove('active'); renderShop(); });
-        tabColors.addEventListener('click', () => { shopCategory = 'colors'; tabColors.classList.add('active'); tabShapes.classList.remove('active'); tabTrails.classList.remove('active'); renderShop(); });
-        tabTrails.addEventListener('click', () => { shopCategory = 'trails'; tabTrails.classList.add('active'); tabShapes.classList.remove('active'); tabColors.classList.remove('active'); renderShop(); });
+        gachaMenuBtn.addEventListener('click', () => { startScreen.classList.add('hidden'); gachaScreen.classList.remove('hidden'); updateUI(); });
+        gachaBackBtn.addEventListener('click', () => { gachaScreen.classList.add('hidden'); startScreen.classList.remove('hidden'); });
+        navGacha.addEventListener('click', () => { 
+            navGacha.classList.add('active'); navCustomize.classList.remove('active'); 
+            panelGacha.classList.remove('hidden'); panelCustomize.classList.add('hidden'); 
+        });
+        navCustomize.addEventListener('click', () => { 
+            navCustomize.classList.add('active'); navGacha.classList.remove('active'); 
+            panelCustomize.classList.remove('hidden'); panelGacha.classList.add('hidden'); 
+            renderCustomize(); 
+        });
+        custTabShapes.addEventListener('click', () => { customizeCategory = 'shapes'; custTabShapes.classList.add('active'); custTabColors.classList.remove('active'); custTabTrails.classList.remove('active'); renderCustomize(); });
+        custTabColors.addEventListener('click', () => { customizeCategory = 'colors'; custTabColors.classList.add('active'); custTabShapes.classList.remove('active'); custTabTrails.classList.remove('active'); renderCustomize(); });
+        custTabTrails.addEventListener('click', () => { customizeCategory = 'trails'; custTabTrails.classList.add('active'); custTabShapes.classList.remove('active'); custTabColors.classList.remove('active'); renderCustomize(); });
         retryBtn.addEventListener('click', () => { requestFullScreen(); gameOverScreen.classList.add('hidden'); document.body.style.cursor = 'none'; isPlaying = true; init(gameMode); requestAnimationFrame(animate); });
-        goShopBtn.addEventListener('click', () => { gameOverScreen.classList.add('hidden'); shopScreen.classList.remove('hidden'); renderShop(); });
+        goGachaBtn.addEventListener('click', () => { gameOverScreen.classList.add('hidden'); gachaScreen.classList.remove('hidden'); updateUI(); });
         titleBtn.addEventListener('click', () => { gameOverScreen.classList.add('hidden'); startScreen.classList.remove('hidden'); updateUI(); });
         clearRetryBtn.addEventListener('click', () => { clearScreen.classList.add('hidden'); startScreen.classList.remove('hidden'); isGameClear = false; updateUI(); });
-        clearShopBtn.addEventListener('click', () => { clearScreen.classList.add('hidden'); shopScreen.classList.remove('hidden'); isGameClear = false; renderShop(); });
+        clearGachaBtn.addEventListener('click', () => { clearScreen.classList.add('hidden'); gachaScreen.classList.remove('hidden'); isGameClear = false; updateUI(); });
 
         window.addEventListener('keydown', (e) => { 
             if (keys.hasOwnProperty(e.key)) { keys[e.key] = true; mouseInput.active = false; }
