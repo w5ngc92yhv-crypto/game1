@@ -296,10 +296,11 @@
             box-shadow: 0 0 50px rgba(0,0,0,0.8);
             position: relative; z-index: 102;
             max-width: 90%; max-height: 90%;
+            overflow-y: auto; /* Allow scroll within result container */
         }
         .multi-result-container.show { transform: scale(1); }
         .multi-result-header {
-            position: absolute; top: -50px; width: 100%; text-align: center;
+            position: absolute; top: 10px; width: 100%; text-align: center;
             font-size: 32px; font-weight: 900; color: #fff; text-shadow: 0 0 20px #00ffff;
         }
         .multi-item-card {
@@ -395,7 +396,7 @@
                     </div>
                     <div class="gacha-desc">
                         プレイヤーの形状を変更<br>
-                        <span style="color:#ffd700; font-weight:bold;">LEGENDARY: HEART</span>
+                        <span style="color:#ffd700; font-weight:bold;"></span>
                     </div>
                     <div class="gacha-btn-group">
                         <button class="btn-roll" onclick="rollGacha('shapes', 1)">
@@ -414,7 +415,7 @@
                     </div>
                     <div class="gacha-desc">
                         機体カラー・エフェクト<br>
-                        <span style="color:#ffd700; font-weight:bold;">LEGENDARY: PHANTOM</span>
+                        <span style="color:#ffd700; font-weight:bold;"></span>
                     </div>
                     <div class="gacha-btn-group">
                         <button class="btn-roll" onclick="rollGacha('colors', 1)">
@@ -437,7 +438,7 @@
                     </div>
                     <div class="gacha-desc">
                         移動の軌跡エフェクト<br>
-                        <span style="color:#ffd700; font-weight:bold;">LEGENDARY: FLAME</span>
+                        <span style="color:#ffd700; font-weight:bold;"></span>
                     </div>
                     <div class="gacha-btn-group">
                         <button class="btn-roll" onclick="rollGacha('trails', 1)">
@@ -689,72 +690,68 @@
             { id: 'lime', name: 'LIME', color: '#00ff00', rarity: 'common' },
             { id: 'crimson', name: 'CRIMSON', color: '#ff0055', rarity: 'common' },
             { id: 'orange', name: 'ORANGE', color: '#ffaa00', rarity: 'common' },
-            { id: 'azure', name: 'AZURE', color: '#007fff', rarity: 'common' },
             { id: 'mint', name: 'MINT', color: '#98ff98', rarity: 'common' },
             { id: 'coral', name: 'CORAL', color: '#ff7f50', rarity: 'common' },
             { id: 'lavender', name: 'LAVENDER', color: '#e6e6fa', rarity: 'common' },
-            { id: 'steel', name: 'STEEL', color: '#4682b4', rarity: 'common' },
             { id: 'bronze', name: 'BRONZE', color: '#cd7f32', rarity: 'common' },
             { id: 'olive', name: 'OLIVE', color: '#808000', rarity: 'common' },
             { id: 'maroon', name: 'MAROON', color: '#800000', rarity: 'common' },
             { id: 'yellow', name: 'YELLOW', color: '#ffff00', rarity: 'common' },
             { id: 'magenta', name: 'MAGENTA', color: '#ff00ff', rarity: 'common' },
             { id: 'teal', name: 'TEAL', color: '#008080', rarity: 'common' },
-            { id: 'navy', name: 'NAVY', color: '#000080', rarity: 'common' },
             { id: 'forest', name: 'FOREST', color: '#228b22', rarity: 'common' },
-            // Added Common
             { id: 'indigo', name: 'INDIGO', color: '#4b0082', rarity: 'common' },
             { id: 'chocolate', name: 'CHOCOLATE', color: '#d2691e', rarity: 'common' },
             { id: 'peach', name: 'PEACH', color: '#ffdab9', rarity: 'common' },
             { id: 'brown', name: 'BROWN', color: '#a52a2a', rarity: 'common' },
+            { id: 'blood', name: 'BLOOD', color: '#880000', rarity: 'common' },
 
             // Rare
             { id: 'white', name: 'WHITE', color: '#ffffff', rarity: 'rare' },
             { id: 'gold', name: 'GOLD', color: '#ffd700', rarity: 'rare' },
             { id: 'violet', name: 'VIOLET', color: '#aa00ff', rarity: 'rare' },
-            { id: 'ruby', name: 'RUBY', color: '#e0115f', rarity: 'rare' },
             { id: 'sapphire', name: 'SAPPHIRE', color: '#0f52ba', rarity: 'rare' },
             { id: 'emerald', name: 'EMERALD', color: '#50c878', rarity: 'rare' },
-            { id: 'amethyst', name: 'AMETHYST', color: '#9966cc', rarity: 'rare' },
             { id: 'obsidian', name: 'OBSIDIAN', color: '#303030', rarity: 'rare' },
-            { id: 'pearl', name: 'PEARL', color: '#eae0c8', rarity: 'rare' },
             { id: 'neon_pink', name: 'NEON PINK', color: '#ff1493', rarity: 'rare' },
-            { id: 'turquoise', name: 'TURQUOISE', color: '#40e0d0', rarity: 'rare' },
-            { id: 'matrix', name: 'MATRIX', color: 'matrix', rarity: 'rare' },
             { id: 'silver', name: 'SILVER', color: '#c0c0c0', rarity: 'rare' },
-            { id: 'sky_blue', name: 'SKY BLUE', color: '#87ceeb', rarity: 'rare' },
             { id: 'hot_pink', name: 'HOT PINK', color: '#ff69b4', rarity: 'rare' },
-            { id: 'tan', name: 'TAN', color: '#d2b48c', rarity: 'rare' },
             { id: 'slate', name: 'SLATE', color: '#708090', rarity: 'rare' },
-            // Added Rare
             { id: 'spring', name: 'SPRING', color: '#00ff7f', rarity: 'rare' },
             { id: 'royal', name: 'ROYAL', color: '#4169e1', rarity: 'rare' },
             { id: 'orchid', name: 'ORCHID', color: '#da70d6', rarity: 'rare' },
             { id: 'tomato', name: 'TOMATO', color: '#ff6347', rarity: 'rare' },
+            { id: 'azure', name: 'AZURE', color: '#007fff', rarity: 'rare' },
+            { id: 'navy', name: 'NAVY', color: '#000080', rarity: 'rare' },
+            { id: 'sunset', name: 'SUNSET', color: 'sunset', rarity: 'rare' },
+            { id: 'ocean', name: 'OCEAN', color: 'ocean', rarity: 'rare' },
 
             // Epic
             { id: 'plasma', name: 'PLASMA', color: 'plasma', rarity: 'epic' },
             { id: 'toxic', name: 'TOXIC', color: 'toxic', rarity: 'epic' },
-            { id: 'sunset', name: 'SUNSET', color: 'sunset', rarity: 'epic' },
-            { id: 'ocean', name: 'OCEAN', color: 'ocean', rarity: 'epic' },
             { id: 'sakura', name: 'SAKURA', color: 'sakura', rarity: 'epic' },
             { id: 'electric', name: 'ELECTRIC', color: 'electric', rarity: 'epic' },
-            { id: 'cyber', name: 'CYBER', color: 'cyber', rarity: 'epic' },
-            // Added Epic (Using hex for simplicity but high impact colors)
             { id: 'midnight', name: 'MIDNIGHT', color: '#191970', rarity: 'epic' },
-            { id: 'blood', name: 'BLOOD', color: '#880000', rarity: 'epic' },
+            { id: 'magma', name: 'MAGMA', color: 'magma', rarity: 'epic' },
+            { id: 'starlight', name: 'STARLIGHT', color: 'starlight', rarity: 'epic' },
+            { id: 'golden_age', name: 'GOLDEN AGE', color: 'golden_age', rarity: 'epic' },
 
             // Legendary
             { id: 'glitch', name: 'GLITCH', color: 'glitch', rarity: 'legendary' },
             { id: 'fire', name: 'INFERNO', color: 'fire', rarity: 'legendary' },
             { id: 'phantom', name: 'PHANTOM', color: 'phantom', rarity: 'legendary' },
             { id: 'rainbow', name: 'RAINBOW', color: 'rainbow', rarity: 'legendary' },
-            { id: 'starlight', name: 'STARLIGHT', color: 'starlight', rarity: 'legendary' },
-            { id: 'galaxy', name: 'GALAXY', color: 'galaxy', rarity: 'legendary' },
-            { id: 'magma', name: 'MAGMA', color: 'magma', rarity: 'legendary' },
-            { id: 'aurora', name: 'AURORA', color: 'aurora', rarity: 'legendary' },
-            { id: 'holo', name: 'HOLO', color: 'holo', rarity: 'legendary' },
-            { id: 'golden_age', name: 'GOLDEN AGE', color: 'golden_age', rarity: 'legendary' }
+            { id: 'angel', name: 'ANGEL', color: '#ffffff', rarity: 'legendary' },
+            { id: 'demon', name: 'DEMON', color: '#ff0055', rarity: 'legendary' },
+            { id: 'orbit', name: 'ORBIT', color: '#00ffff', rarity: 'legendary' },
+            { id: 'barrier', name: 'BARRIER', color: '#00ff00', rarity: 'legendary' },
+            { id: 'hyper_spin', name: 'HYPER SPIN', color: '#ffff00', rarity: 'legendary' },
+            // New Legendary Colors
+            { id: 'phoenix', name: 'PHOENIX', color: 'phoenix', rarity: 'legendary' },
+            { id: 'vortex', name: 'VORTEX', color: 'vortex', rarity: 'legendary' },
+            { id: 'prism_aura', name: 'PRISM', color: 'prism_aura', rarity: 'legendary' },
+            { id: 'bio_hazard', name: 'BIOHAZARD', color: 'bio_hazard', rarity: 'legendary' },
+            { id: 'cyber_pulse', name: 'CYBER', color: 'cyber_pulse', rarity: 'legendary' }
         ];
 
         const TRAILS = [
@@ -811,7 +808,7 @@
             highScoreHard: 0,
             highScoreBossRush: 0,
             highScoreBlasterOnly: 0,
-            points: 0, 
+            points: 50000, 
             
             ownedShapes: ['circle'],
             equippedShape: 'circle',
@@ -851,22 +848,20 @@
         }
 
         function loadData() {
-            const stored = localStorage.getItem('neonSurvivalGachaV5');
+            const stored = localStorage.getItem('neonSurvivalGachaV6');
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
                     saveData = { ...saveData, ...parsed }; 
                     if(!saveData.ownedTrails) saveData.ownedTrails = ['none'];
                     if(!saveData.equippedTrail) saveData.equippedTrail = 'none';
-                    if(saveData.highScoreHard === undefined) saveData.highScoreHard = 0;
-                    if(saveData.highScoreBlasterOnly === undefined) saveData.highScoreBlasterOnly = 0;
                 } catch (e) { console.error("Save data corrupted"); }
             }
             updateUI();
         }
 
         function saveDataToLocal() {
-            localStorage.setItem('neonSurvivalGachaV5', JSON.stringify(saveData));
+            localStorage.setItem('neonSurvivalGachaV6', JSON.stringify(saveData));
             updateUI();
         }
 
@@ -976,7 +971,8 @@
             summonCore.style.height = '10px';
             summonCore.style.opacity = 1;
             
-            let maxRarityVal = 0; 
+            // Determine core color based on max rarity pulled
+            let maxRarityVal = 0; // 0:common, 1:rare, 2:epic, 3:legend
             gachaResults.forEach(r => {
                 let val = 0;
                 if(r.item.rarity==='rare') val=1;
@@ -1097,6 +1093,7 @@
 
         function showMultiResult(category, totalRefund) {
             gachaMultiResult.style.display = 'grid';
+            // Clear previous items except header/footer
             const items = gachaMultiResult.querySelectorAll('.multi-item-card');
             items.forEach(el => el.remove());
             
@@ -1107,6 +1104,7 @@
                 div.className = `multi-item-card rarity-${res.item.rarity}`;
                 div.style.animationDelay = `${i * 0.1}s`; 
                 
+                // Canvas Preview
                 const cvs = document.createElement('canvas');
                 cvs.width = 60; cvs.height = 60;
                 cvs.className = 'multi-item-preview';
@@ -1114,12 +1112,14 @@
                 drawPreviewInContext(ctx, category, res.item, 30, 30, 15);
                 div.appendChild(cvs);
                 
+                // Name
                 const name = document.createElement('div');
                 name.className = 'multi-item-name';
                 name.innerText = res.item.name;
                 if(res.item.rarity === 'legendary') name.style.color = '#ffd700';
                 div.appendChild(name);
                 
+                // Status
                 const status = document.createElement('div');
                 status.className = 'multi-item-status';
                 if(res.duplicate) {
@@ -1157,8 +1157,8 @@
             if (category === 'trails') {
                 renderTrailPreview(ctx, item.type, drawColor, x, y);
             } else {
-                 if (['glitch', 'fire', 'phantom', 'rainbow', 'plasma', 'toxic', 'starlight', 'matrix', 'sunset', 'ocean', 'sakura', 'electric', 'cyber', 'galaxy', 'magma', 'aurora', 'holo', 'golden_age'].includes(item.id) || 
-                     ['glitch', 'fire', 'phantom', 'rainbow', 'plasma', 'toxic', 'starlight', 'matrix', 'sunset', 'ocean', 'sakura', 'electric', 'cyber', 'galaxy', 'magma', 'aurora', 'holo', 'golden_age'].includes(drawColor)) {
+                 if (['glitch', 'fire', 'phantom', 'rainbow', 'plasma', 'toxic', 'starlight', 'matrix', 'sunset', 'ocean', 'sakura', 'electric', 'cyber', 'galaxy', 'magma', 'aurora', 'holo', 'golden_age', 'angel', 'demon', 'orbit', 'barrier', 'hyper_spin', 'phoenix', 'vortex', 'prism_aura', 'bio_hazard', 'cyber_pulse'].includes(item.id) || 
+                     ['glitch', 'fire', 'phantom', 'rainbow', 'plasma', 'toxic', 'starlight', 'matrix', 'sunset', 'ocean', 'sakura', 'electric', 'cyber', 'galaxy', 'magma', 'aurora', 'holo', 'golden_age', 'angel', 'demon', 'orbit', 'barrier', 'hyper_spin', 'phoenix', 'vortex', 'prism_aura', 'bio_hazard', 'cyber_pulse'].includes(drawColor)) {
                     
                     const effId = category === 'colors' ? item.id : (category === 'shapes' ? (COLORS.find(c => c.id === saveData.equippedColor)?.id || 'cyan') : 'cyan');
                     
@@ -1170,8 +1170,6 @@
                     else if (effId === 'toxic') renderToxicShapePreview(ctx, drawShape, x, y, size);
                     else if (effId === 'starlight') renderStarlightShapePreview(ctx, drawShape, x, y, size);
                     else if (effId === 'matrix') renderMatrixShapePreview(ctx, drawShape, x, y, size);
-                    
-                    // New effects
                     else if (effId === 'sunset') renderSunsetShapePreview(ctx, drawShape, x, y, size);
                     else if (effId === 'ocean') renderOceanShapePreview(ctx, drawShape, x, y, size);
                     else if (effId === 'sakura') renderSakuraShapePreview(ctx, drawShape, x, y, size);
@@ -1182,6 +1180,16 @@
                     else if (effId === 'aurora') renderAuroraShapePreview(ctx, drawShape, x, y, size);
                     else if (effId === 'holo') renderHoloShapePreview(ctx, drawShape, x, y, size);
                     else if (effId === 'golden_age') renderGoldenAgeShapePreview(ctx, drawShape, x, y, size);
+                    else if (effId === 'angel') renderAngelWings(ctx, drawShape, x, y, size, '#ffffff');
+                    else if (effId === 'demon') renderDemonWings(ctx, drawShape, x, y, size, '#ff0055');
+                    else if (effId === 'orbit') renderOrbit(ctx, drawShape, x, y, size, '#00ffff');
+                    else if (effId === 'barrier') renderBarrier(ctx, drawShape, x, y, size, '#00ff00');
+                    else if (effId === 'hyper_spin') renderHyperSpin(ctx, drawShape, x, y, size, '#ffff00');
+                    else if (effId === 'phoenix') renderPhoenix(ctx, drawShape, x, y, size, '#ff4500');
+                    else if (effId === 'vortex') renderVortex(ctx, drawShape, x, y, size, '#9400d3');
+                    else if (effId === 'prism_aura') renderPrismAura(ctx, drawShape, x, y, size, '#00ffff');
+                    else if (effId === 'bio_hazard') renderBioHazard(ctx, drawShape, x, y, size, '#32cd32');
+                    else if (effId === 'cyber_pulse') renderCyberPulse(ctx, drawShape, x, y, size, '#00bfff');
                     else renderShapePreview(ctx, drawShape, drawColor, x, y, size);
                  }
                  else renderShapePreview(ctx, drawShape, drawColor, x, y, size);
@@ -1222,6 +1230,8 @@
                 cvs.width = 40; cvs.height = 40;
                 cvs.className = 'inv-preview';
                 const ctx = cvs.getContext('2d');
+                // Clear for preview
+                ctx.clearRect(0,0,40,40);
 
                 if (isOwned) {
                     drawPreviewInContext(ctx, customizeCategory, item, 20, 20, 8);
@@ -1327,7 +1337,7 @@
         }
 
         function renderShapePreview(ctx, type, color, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.fillStyle = color;
             ctx.strokeStyle = '#fff';
             ctx.lineWidth = 2;
@@ -1338,25 +1348,25 @@
         }
 
         function renderGlitchShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.save(); ctx.translate(-2, 0); ctx.fillStyle = 'rgba(255, 0, 0, 0.7)'; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.restore();
             ctx.save(); ctx.translate(2, 0); ctx.fillStyle = 'rgba(0, 0, 255, 0.7)'; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.restore();
             ctx.fillStyle = '#fff'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.stroke();
         }
         function renderFireShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 15; ctx.shadowColor = '#ff0000'; ctx.fillStyle = 'rgba(255, 60, 0, 0.8)'; drawShape(ctx, type, x, y, r * 1.2); ctx.fill();
             ctx.shadowBlur = 5; ctx.shadowColor = '#ffaa00'; ctx.fillStyle = 'rgba(255, 160, 0, 0.9)'; drawShape(ctx, type, x, y, r * 1.0); ctx.fill();
             ctx.shadowBlur = 0; ctx.fillStyle = '#ffffaa'; drawShape(ctx, type, x, y, r * 0.6); ctx.fill();
         }
         function renderPhantomShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 15; ctx.shadowColor = '#4b0082'; ctx.fillStyle = 'rgba(75, 0, 130, 0.8)'; drawShape(ctx, type, x, y, r * 1.2); ctx.fill();
             ctx.shadowBlur = 5; ctx.shadowColor = '#ff00ff'; ctx.fillStyle = 'rgba(200, 0, 200, 0.9)'; drawShape(ctx, type, x, y, r * 1.0); ctx.fill();
             ctx.shadowBlur = 0; ctx.fillStyle = '#ffe0ff'; drawShape(ctx, type, x, y, r * 0.6); ctx.fill();
         }
         function renderRainbowShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             const grad = ctx.createLinearGradient(x-r, y-r, x+r, y+r);
             grad.addColorStop(0, 'red'); grad.addColorStop(0.2, 'orange'); grad.addColorStop(0.4, 'yellow'); grad.addColorStop(0.6, 'green'); grad.addColorStop(0.8, 'blue'); grad.addColorStop(1, 'violet');
             ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
@@ -1364,90 +1374,361 @@
             ctx.beginPath(); ctx.arc(x, y, r * 0.4, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
         }
         function renderPlasmaShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 10; ctx.shadowColor = '#00ffff'; ctx.fillStyle = '#0000ff'; drawShape(ctx, type, x, y, r); ctx.fill();
             ctx.shadowBlur = 5; ctx.shadowColor = '#ff00ff'; ctx.fillStyle = 'rgba(255, 0, 255, 0.5)'; drawShape(ctx, type, x, y, r*0.8); ctx.fill();
             ctx.shadowBlur = 0;
         }
         function renderToxicShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.fillStyle = '#4b0082'; drawShape(ctx, type, x, y, r); ctx.fill();
             ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 3; ctx.stroke();
             ctx.fillStyle = '#00ff00'; ctx.beginPath(); ctx.arc(x, y, r*0.3, 0, Math.PI*2); ctx.fill();
         }
         function renderStarlightShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 15; ctx.shadowColor = '#ffff00'; ctx.fillStyle = '#ffffff'; drawShape(ctx, type, x, y, r); ctx.fill();
             ctx.fillStyle = 'rgba(255, 255, 0, 0.5)'; drawShape(ctx, type, x, y, r); ctx.fill();
         }
         function renderMatrixShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.fillStyle = '#003300'; drawShape(ctx, type, x, y, r); ctx.fill();
             ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 2; ctx.stroke();
             ctx.fillStyle = '#00ff00'; ctx.font = '10px monospace'; ctx.fillText('10', x-5, y);
         }
         function renderSunsetShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             const grad = ctx.createLinearGradient(x, y-r, x, y+r);
             grad.addColorStop(0, '#ffcc33'); grad.addColorStop(0.5, '#ff6666'); grad.addColorStop(1, '#663399');
             ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
         }
         function renderOceanShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             const grad = ctx.createRadialGradient(x, y, r*0.2, x, y, r);
             grad.addColorStop(0, '#00ffff'); grad.addColorStop(1, '#00008b');
             ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
         }
         function renderSakuraShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.fillStyle = '#ffb7c5'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
             ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x-5, y-5, 3, 0, Math.PI*2); ctx.fill();
         }
         function renderElectricShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 10; ctx.shadowColor = '#00ffff'; ctx.strokeStyle = '#00ffff'; ctx.lineWidth = 3; drawShape(ctx, type, x, y, r); ctx.stroke();
             ctx.fillStyle = '#e0ffff'; ctx.fill(); ctx.shadowBlur = 0;
         }
         function renderCyberShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.fillStyle = '#000'; ctx.strokeStyle = '#00ff00'; ctx.lineWidth = 2;
             drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(x-r, y); ctx.lineTo(x+r, y); ctx.stroke();
             ctx.beginPath(); ctx.moveTo(x, y-r); ctx.lineTo(x, y+r); ctx.stroke();
         }
         function renderGalaxyShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
             grad.addColorStop(0, '#ff00ff'); grad.addColorStop(0.5, '#4b0082'); grad.addColorStop(1, '#000000');
             ctx.fillStyle = grad; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
             ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+3, y-3, 1, 0, Math.PI*2); ctx.fill();
         }
         function renderMagmaShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 15; ctx.shadowColor = '#ff4500'; ctx.fillStyle = '#8b0000'; drawShape(ctx, type, x, y, r); ctx.fill();
             ctx.fillStyle = '#ff8c00'; ctx.beginPath(); ctx.arc(x, y, r*0.6, 0, Math.PI*2); ctx.fill(); ctx.shadowBlur = 0;
         }
         function renderAuroraShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             const grad = ctx.createLinearGradient(x-r, y, x+r, y);
             grad.addColorStop(0, '#00ff00'); grad.addColorStop(0.5, '#00ffff'); grad.addColorStop(1, '#ff00ff');
             ctx.fillStyle = grad; ctx.globalAlpha = 0.8; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.globalAlpha = 1;
         }
         function renderHoloShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.fillStyle = 'rgba(200, 240, 255, 0.6)'; ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)'; ctx.lineWidth = 2;
             drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
         }
         function renderGoldenAgeShapePreview(ctx, type, x, y, r) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             ctx.shadowBlur = 20; ctx.shadowColor = '#ffd700';
             const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
             grad.addColorStop(0, '#fffacd'); grad.addColorStop(1, '#ffd700');
             ctx.fillStyle = grad; drawShape(ctx, type, x, y, r); ctx.fill(); ctx.shadowBlur = 0;
         }
 
+        function renderAngelWings(ctx, type, x, y, r, color) {
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
+            ctx.save(); ctx.translate(x, y);
+            const flap = Math.sin(Date.now()/200) * 0.2;
+            
+            ctx.save(); ctx.rotate(-0.2 + flap); 
+            ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.shadowBlur = 15; ctx.shadowColor = '#fff';
+            ctx.beginPath(); ctx.ellipse(-r*1.2, -r*0.5, r*1.2, r*0.6, -0.5, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+            
+            ctx.save(); ctx.rotate(0.2 - flap); 
+            ctx.beginPath(); ctx.ellipse(r*1.2, -r*0.5, r*1.2, r*0.6, 0.5, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+            ctx.restore();
+            
+            ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.arc(x, y, r * 0.4, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
+        }
+
+        function renderDemonWings(ctx, type, x, y, r, color) {
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
+            ctx.save(); ctx.translate(x, y);
+            const flap = Math.sin(Date.now()/150) * 0.3;
+            
+            ctx.fillStyle = 'rgba(100,0,0,0.8)'; ctx.shadowBlur = 10; ctx.shadowColor = '#f00';
+            
+            ctx.save(); ctx.scale(-1, 1); ctx.rotate(flap);
+            ctx.beginPath(); ctx.moveTo(r*0.5, -r*0.5); 
+            ctx.quadraticCurveTo(r*2, -r*2, r*2.5, -r*0.5); 
+            ctx.quadraticCurveTo(r*1.5, r*0.5, r*1.2, r*1.5);
+            ctx.quadraticCurveTo(r*0.8, 0, r*0.5, 0); ctx.fill();
+            ctx.restore();
+
+            ctx.save(); ctx.rotate(flap);
+            ctx.beginPath(); ctx.moveTo(r*0.5, -r*0.5); 
+            ctx.quadraticCurveTo(r*2, -r*2, r*2.5, -r*0.5); 
+            ctx.quadraticCurveTo(r*1.5, r*0.5, r*1.2, r*1.5);
+            ctx.quadraticCurveTo(r*0.8, 0, r*0.5, 0); ctx.fill();
+            ctx.restore();
+            ctx.restore();
+            
+            ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+        }
+
+        function renderOrbit(ctx, type, x, y, r, color) {
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
+            const t = Date.now()/300;
+            
+            ctx.fillStyle = '#00ffff'; ctx.shadowBlur = 10; ctx.shadowColor = '#00ffff';
+            const bitR = r*0.4;
+            const orbitR = r*2;
+            
+            const bx1 = x + Math.cos(t) * orbitR; const by1 = y + Math.sin(t) * orbitR;
+            const bx2 = x + Math.cos(t+Math.PI) * orbitR; const by2 = y + Math.sin(t+Math.PI) * orbitR;
+            
+            ctx.beginPath(); ctx.arc(bx1, by1, bitR, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(bx2, by2, bitR, 0, Math.PI*2); ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+        }
+
+        function renderBarrier(ctx, type, x, y, r, color) {
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
+            const t = Date.now() / 1000; 
+
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(t); // Rotate outer barrier
+
+            ctx.strokeStyle = color; 
+            ctx.lineWidth = 2;
+            ctx.setLineDash([r * 0.5, r * 0.2]); // Dash pattern
+
+            ctx.beginPath();
+            for(let i=0; i<6; i++) {
+                ctx.lineTo(r*2.2 * Math.cos(i*Math.PI/3), r*2.2 * Math.sin(i*Math.PI/3));
+            }
+            ctx.closePath();
+            ctx.stroke();
+            
+            // Inner ring rotating opposite
+            ctx.rotate(-t * 2); 
+            ctx.setLineDash([r * 0.2, r * 0.5]);
+            ctx.beginPath();
+            ctx.arc(0, 0, r * 1.6, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.restore();
+            
+            // Skin
+            ctx.fillStyle = color; ctx.strokeStyle = color; ctx.lineWidth = 2;
+            drawShape(ctx, type, x, y, r); ctx.fill(); ctx.stroke();
+        }
+
+        function renderHyperSpin(ctx, type, x, y, r, color) {
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
+            const t = Date.now() / 50; 
+            
+            ctx.save(); 
+            ctx.translate(x, y); 
+            
+            // Afterimages
+            for(let i = 0; i < 3; i++) {
+                ctx.save();
+                ctx.rotate(t - i * 0.2); 
+                ctx.globalAlpha = 0.3 - (i * 0.1);
+                ctx.fillStyle = color;
+                drawShape(ctx, type, 0, 0, r);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Main body spinning
+            ctx.rotate(t); 
+            
+            ctx.globalAlpha = 1; ctx.fillStyle = color; ctx.strokeStyle = '#fff';
+            drawShape(ctx, type, 0, 0, r); ctx.fill(); ctx.stroke();
+            
+            // Spike to show rotation even if circle
+            ctx.beginPath();
+            ctx.moveTo(0, -r*1.5);
+            ctx.lineTo(r*0.2, -r);
+            ctx.lineTo(-r*0.2, -r);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // --- NEW RENDERERS ---
+
+        function renderPhoenix(ctx, type, x, y, r, color) {
+            ctx.save(); ctx.translate(x, y);
+            const t = Date.now() / 150;
+            const flap = Math.sin(t) * 0.4;
+            
+            // Fire aura
+            ctx.shadowBlur = 20; ctx.shadowColor = '#ff4500';
+            ctx.fillStyle = 'rgba(255, 69, 0, 0.7)';
+
+            // Left Wing
+            ctx.save(); ctx.scale(-1, 1); ctx.rotate(flap);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.quadraticCurveTo(r*3, -r*2, r*4, -r); 
+            ctx.quadraticCurveTo(r*2, 0, r, r);
+            ctx.closePath(); ctx.fill();
+            ctx.restore();
+
+            // Right Wing
+            ctx.save(); ctx.rotate(flap);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.quadraticCurveTo(r*3, -r*2, r*4, -r); 
+            ctx.quadraticCurveTo(r*2, 0, r, r);
+            ctx.closePath(); ctx.fill();
+            ctx.restore();
+
+            ctx.shadowBlur = 0;
+            
+            // Body
+            ctx.fillStyle = '#ff8c00'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+            drawShape(ctx, type, 0, 0, r); ctx.fill(); ctx.stroke();
+            ctx.restore();
+        }
+
+        function renderVortex(ctx, type, x, y, r, color) {
+            const t = Date.now() / 200;
+            ctx.save(); ctx.translate(x, y);
+            
+            ctx.strokeStyle = '#9400d3'; ctx.lineWidth = 2; ctx.shadowBlur = 10; ctx.shadowColor = '#9400d3';
+            
+            for(let i=0; i<3; i++) {
+                ctx.save();
+                ctx.rotate(t + i * (Math.PI*2/3));
+                ctx.beginPath();
+                ctx.arc(0, 0, r * (2 - i*0.3), 0, Math.PI * 1.5);
+                ctx.stroke();
+                ctx.restore();
+            }
+            
+            ctx.fillStyle = '#4b0082'; ctx.strokeStyle = '#fff';
+            drawShape(ctx, type, 0, 0, r); ctx.fill(); ctx.stroke();
+            ctx.restore();
+        }
+
+        function renderPrismAura(ctx, type, x, y, r, color) {
+            const t = Date.now() / 1000;
+            ctx.save(); ctx.translate(x, y);
+            
+            ctx.fillStyle = 'rgba(0, 255, 255, 0.3)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            
+            // 3 orbiting prisms
+            for(let i=0; i<3; i++) {
+                ctx.save();
+                const angle = t + i * (Math.PI*2/3);
+                const dist = r * 2.5;
+                ctx.translate(Math.cos(angle) * dist, Math.sin(angle) * dist);
+                ctx.rotate(t * 4);
+                ctx.beginPath();
+                // Triangle
+                ctx.moveTo(0, -r/2); ctx.lineTo(r/2, r/2); ctx.lineTo(-r/2, r/2); ctx.closePath();
+                ctx.fill(); ctx.stroke();
+                ctx.restore();
+            }
+
+            ctx.fillStyle = '#e0ffff'; ctx.strokeStyle = '#00ffff';
+            drawShape(ctx, type, 0, 0, r); ctx.fill(); ctx.stroke();
+            ctx.restore();
+        }
+
+        function renderBioHazard(ctx, type, x, y, r, color) {
+            const t = Date.now() / 500;
+            ctx.save(); ctx.translate(x, y);
+            
+            ctx.fillStyle = 'rgba(50, 205, 50, 0.6)';
+            
+            // Bubbles rising
+            for(let i=0; i<5; i++) {
+                const offset = i * 1000;
+                const progress = ((Date.now() + offset) % 2000) / 2000;
+                const by = r - (progress * r * 4);
+                const bx = Math.sin(progress * 10 + i) * r;
+                const size = (1 - progress) * r * 0.5;
+                ctx.beginPath(); ctx.arc(bx, by, size, 0, Math.PI*2); ctx.fill();
+            }
+
+            ctx.fillStyle = '#32cd32'; ctx.strokeStyle = '#adff2f';
+            drawShape(ctx, type, 0, 0, r); ctx.fill(); ctx.stroke();
+            
+            // Bio symbol approximate
+            ctx.fillStyle = '#000'; 
+            ctx.beginPath(); ctx.arc(0, 0, r*0.4, 0, Math.PI*2); ctx.fill();
+            
+            ctx.restore();
+        }
+
+        function renderCyberPulse(ctx, type, x, y, r, color) {
+            const t = Date.now() / 1000;
+            ctx.save(); ctx.translate(x, y);
+            
+            const scale = (Math.sin(t * 5) + 1) * 0.5; // 0 to 1
+            
+            ctx.strokeStyle = '#00bfff'; ctx.lineWidth = 2;
+            ctx.globalAlpha = 1 - scale;
+            ctx.beginPath();
+            // Hexagon pulse
+            for(let i=0; i<6; i++) {
+                const ang = i * Math.PI / 3;
+                const dist = r + (scale * r * 2);
+                ctx.lineTo(Math.cos(ang)*dist, Math.sin(ang)*dist);
+            }
+            ctx.closePath();
+            ctx.stroke();
+            
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#1e90ff'; ctx.strokeStyle = '#fff';
+            drawShape(ctx, type, 0, 0, r); ctx.fill(); ctx.stroke();
+            
+            // Grid lines on body
+            ctx.beginPath(); ctx.moveTo(-r, 0); ctx.lineTo(r, 0); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, -r); ctx.lineTo(0, r); ctx.stroke();
+
+            ctx.restore();
+        }
+
         function renderTrailPreview(ctx, type, color, x, y) {
-            ctx.clearRect(0,0,x*2,y*2);
+            // ctx.clearRect(0,0,x*2,y*2); // Removed
             if (type === 'none') { ctx.fillStyle = '#555'; ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('NONE', x, y); return; }
             if (color === 'glitch') color = '#ffffff';
             
@@ -1542,36 +1823,6 @@
                     currentColor = '#ff4400';
                 } else if (this.colorId === 'phantom') {
                     currentColor = '#4b0082';
-                } else if (this.colorId === 'rainbow') {
-                    currentColor = `hsl(${(Date.now()/5)%360}, 100%, 50%)`;
-                } else if (this.colorId === 'plasma') {
-                    currentColor = Math.random() > 0.5 ? '#0000ff' : '#ff00ff';
-                } else if (this.colorId === 'toxic') {
-                    currentColor = Math.random() > 0.5 ? '#00ff00' : '#800080';
-                } else if (this.colorId === 'starlight') {
-                    currentColor = Math.random() > 0.5 ? '#ffffff' : '#ffff00';
-                } else if (this.colorId === 'matrix') {
-                    currentColor = Math.random() > 0.2 ? '#00ff00' : '#003300';
-                } else if (this.colorId === 'sunset') {
-                    currentColor = '#ff4500';
-                } else if (this.colorId === 'ocean') {
-                    currentColor = '#0000cd';
-                } else if (this.colorId === 'sakura') {
-                    currentColor = '#ffb7c5';
-                } else if (this.colorId === 'electric') {
-                    currentColor = Math.random() > 0.5 ? '#00ffff' : '#e0ffff';
-                } else if (this.colorId === 'cyber') {
-                    currentColor = '#00ff00';
-                } else if (this.colorId === 'galaxy') {
-                    currentColor = Math.random() > 0.5 ? '#4b0082' : '#000000';
-                } else if (this.colorId === 'magma') {
-                    currentColor = Math.random() > 0.5 ? '#8b0000' : '#ff4500';
-                } else if (this.colorId === 'aurora') {
-                    currentColor = `hsl(${(Date.now()/20)%120 + 90}, 100%, 50%)`;
-                } else if (this.colorId === 'holo') {
-                    currentColor = `rgba(200, 240, 255, ${Math.random()})`;
-                } else if (this.colorId === 'golden_age') {
-                    currentColor = '#ffd700';
                 }
 
                 let ax = 0;
@@ -1736,7 +1987,41 @@
                     ctx.shadowBlur = 15; ctx.shadowColor = '#ffd700'; frameColor = '#ffd700';
                 }
 
-                // Apply fill if not set by gradient above
+                // --- NEW ANIMATED LEGENDARY EFFECT RENDERING ---
+                // Render behind the player
+                if (this.colorId === 'angel') {
+                    renderAngelWings(ctx, this.shapeType, 0, 0, r, '#ffffff');
+                    ctx.restore(); return; // renderAngelWings handles body drawing too
+                } else if (this.colorId === 'demon') {
+                    renderDemonWings(ctx, this.shapeType, 0, 0, r, '#ff0055');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'orbit') {
+                    renderOrbit(ctx, this.shapeType, 0, 0, r, '#00ffff');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'barrier') {
+                    renderBarrier(ctx, this.shapeType, 0, 0, r, '#00ff00');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'hyper_spin') {
+                    renderHyperSpin(ctx, this.shapeType, 0, 0, r, '#ffff00');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'phoenix') {
+                    renderPhoenix(ctx, this.shapeType, 0, 0, r, '#ff4500');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'vortex') {
+                    renderVortex(ctx, this.shapeType, 0, 0, r, '#9400d3');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'prism_aura') {
+                    renderPrismAura(ctx, this.shapeType, 0, 0, r, '#00ffff');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'bio_hazard') {
+                    renderBioHazard(ctx, this.shapeType, 0, 0, r, '#32cd32');
+                    ctx.restore(); return;
+                } else if (this.colorId === 'cyber_pulse') {
+                    renderCyberPulse(ctx, this.shapeType, 0, 0, r, '#00bfff');
+                    ctx.restore(); return;
+                }
+
+                // Default Body Rendering (if not handled by custom renderer above)
                 if (!['sunset','ocean','galaxy'].includes(this.colorId)) ctx.fillStyle = frameColor;
                 
                 ctx.strokeStyle = frameColor;
@@ -1746,6 +2031,163 @@
                 ctx.beginPath(); ctx.arc(0, 0, this.radius, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill();
                 ctx.restore();
                 ctx.globalAlpha = 1; 
+            }
+        }
+
+        // Modified Class: Blaster
+        class Blaster {
+            constructor(x, y, angle, width, options = {}) {
+                // Initialize position and angle
+                if (x !== undefined && y !== undefined) {
+                    this.x = x;
+                    this.y = y;
+                    this.angle = angle;
+                } else {
+                    const spawnAngle = Math.random() * Math.PI * 2;
+                    const dist = 400 + Math.random() * 100;
+                    this.x = player.x + Math.cos(spawnAngle) * dist;
+                    this.y = player.y + Math.sin(spawnAngle) * dist;
+                    this.x = Math.max(50, Math.min(canvas.width - 50, this.x));
+                    this.y = Math.max(50, Math.min(canvas.height - 50, this.y));
+                    this.angle = Math.atan2(player.y - this.y, player.x - this.x);
+                }
+
+                this.timer = 0;
+                this.phase = 0; // 0: Warning, 1: Fire, 2: Fade
+                this.scale = 0;
+                this.opacity = 0;
+                this.beamWidth = 0;
+                this.maxBeamWidth = width || 80;
+                
+                // New options
+                this.tracking = options.tracking || false;
+                this.sweepSpeed = options.sweepSpeed || 0;
+                this.quick = options.quick || false;
+
+                // Color based on type
+                this.color = '#ffffff'; // Default
+                this.warningColor = '#ff0000'; // Default warning
+                if (this.tracking) {
+                    this.warningColor = '#aa00ff'; // Purple for tracking
+                    this.color = '#aa00ff';
+                } else if (this.sweepSpeed !== 0) {
+                    this.warningColor = '#ff8800'; // Orange for sweep
+                    this.color = '#ff8800';
+                } else if (this.quick) {
+                    this.warningColor = '#00ffff'; // Cyan for quick
+                    this.color = '#00ffff';
+                }
+            }
+
+            update(dt, timeScale) {
+                this.timer += dt;
+                
+                const warningTime = this.quick ? 600 : 1000;
+
+                if (this.phase === 0) { // Warning phase
+                    if (this.scale < 1) this.scale += 0.1 * timeScale;
+                    if (this.opacity < 1) this.opacity += 0.1 * timeScale;
+                    
+                    // Tracking behavior: lock aim until shortly before firing
+                    if (this.tracking && this.timer < warningTime - 200) {
+                        this.angle = Math.atan2(player.y - this.y, player.x - this.x);
+                    }
+                    
+                    // Pre-sweep rotation for visual indication
+                    if (this.sweepSpeed !== 0) {
+                         this.angle += this.sweepSpeed * timeScale;
+                    }
+
+                    if (this.timer > warningTime) { 
+                        this.phase = 1;
+                        this.timer = 0;
+                        this.beamWidth = this.maxBeamWidth;
+                        createExplosion(this.x, this.y, '#ffffff', 5);
+                    }
+                } else if (this.phase === 1) { // Firing phase
+                    // Sweeping behavior
+                    if (this.sweepSpeed !== 0) {
+                        this.angle += this.sweepSpeed * timeScale;
+                    }
+
+                    // Collision detection
+                    const beamLen = 2000;
+                    const bx = this.x + Math.cos(this.angle) * beamLen;
+                    const by = this.y + Math.sin(this.angle) * beamLen;
+                    const num = Math.abs((bx - this.x) * (this.y - player.y) - (this.x - player.x) * (by - this.y));
+                    const den = Math.hypot(bx - this.x, by - this.y);
+                    const dist = num / den;
+                    const dot = (player.x - this.x) * Math.cos(this.angle) + (player.y - this.y) * Math.sin(this.angle);
+                    
+                    if (dist < (this.beamWidth / 2 + player.radius) && dot > 0) {
+                        onPlayerHit();
+                    }
+
+                    if (this.timer > 400) { 
+                        this.phase = 2;
+                        this.timer = 0;
+                    }
+                } else if (this.phase === 2) { // Fade out
+                    this.scale -= 0.1 * timeScale;
+                    this.opacity -= 0.1 * timeScale;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+
+                // Warning Line
+                if (this.phase === 0) {
+                    ctx.globalAlpha = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(2000, 0);
+                    ctx.strokeStyle = this.warningColor; 
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([20, 15]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                // BEAM
+                if (this.phase === 1) {
+                    ctx.globalAlpha = 1; 
+                    // Outer Glow
+                    ctx.shadowBlur = 30;
+                    ctx.shadowColor = this.color;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, -this.beamWidth/2, 3000, this.beamWidth);
+                    // Inner Core
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, -this.beamWidth/2 * 0.6, 3000, this.beamWidth * 0.6);
+                }
+
+                // Body
+                if (this.opacity > 0) {
+                    ctx.globalAlpha = Math.max(0, this.opacity);
+                    ctx.scale(this.scale, this.scale);
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.moveTo(25, -25);
+                    ctx.lineTo(50, -15);
+                    ctx.lineTo(50, 15);
+                    ctx.lineTo(25, 25);
+                    ctx.lineTo(-25, 35);
+                    ctx.lineTo(-35, 0);
+                    ctx.lineTo(-25, -35);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    // Eyes color change
+                    ctx.fillStyle = this.color === '#ffffff' ? '#000' : this.color;
+                    ctx.beginPath(); ctx.arc(0, -12, 6, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(0, 12, 6, 0, Math.PI*2); ctx.fill();
+                }
+                ctx.restore();
             }
         }
         
